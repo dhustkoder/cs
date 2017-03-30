@@ -27,10 +27,7 @@ int main(const int argc, const char* const* const argv)
 	const int size = argc - 1;
 	int* const array = make_array_from_strings(&argv[1], size);
 	bubble_sort(array, size);
-
-	for (int i = 0; i < size; ++i)
-		printf("[%d] = %d\n", i, array[i]);
-
+	print_array(array, size);
 	free(array);
 	return EXIT_SUCCESS;
 }

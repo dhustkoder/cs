@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "common.h"
+#include "../../common.h"
 
 
-static int* quick_sort(int* arr, int size);
+static void quick_sort(int* arr, int size);
 static void quick_sort_rec(int* arr, int beg, int end);
 static int quick_sort_part(int* arr, int beg, int end);
 
@@ -16,22 +16,18 @@ int main(const int argc, const char* const * const argv)
 	}
 
 	const int size = argc - 1;
-	int* const array = quick_sort(make_array_from_strings(&argv[1], size), size);
-
-	for (int i = 0; i < size; ++i)
-		printf("[%d] = %d\n", i, array[i]);
-
-	free(array);
+	int* const arr = make_array_from_strings(&argv[1], size); 
+	quick_sort(arr, size);
+	print_array(arr, size);
+	free(arr);
 	return EXIT_SUCCESS;
 }
 
 
-int* quick_sort(int* const arr, const int size)
+void quick_sort(int* const arr, const int size)
 {
 	if (size > 1)
 		quick_sort_rec(arr, 0, size - 1);
-
-	return arr;
 }
 
 

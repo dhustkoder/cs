@@ -40,9 +40,7 @@ int main(const int argc, const char* const * const argv)
 	const int size = argc - 2;
 	int* const array = make_array_from_strings(&argv[1], size);
 	qsort(array, size, sizeof(int), compare);
-
-	for (int i = 0; i < size; ++i)
-		printf("[%d] = %d\n", i, array[i]);
+	print_array(array, size);
 
 	const int* const addr = binary_search(target, array, size);
 
