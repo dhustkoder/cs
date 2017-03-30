@@ -6,6 +6,7 @@
 #include <string.h>
 #include <stdbool.h>
 
+
 typedef struct Vector {
 	void* data;
 	int bytes;
