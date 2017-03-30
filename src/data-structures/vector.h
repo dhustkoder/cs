@@ -1,9 +1,10 @@
 #ifndef CS_DATA_STRUCTURES_VECTOR_H_
 #define CS_DATA_STRUCTURES_VECTOR_H_
+#include <stdio.h>
+#include <stdlib.h>
 #include <limits.h>
 #include <string.h>
 #include <stdbool.h>
-
 
 typedef struct Vector {
 	void* data;
@@ -50,9 +51,9 @@ static inline void destroy_vector(Vector* const v)
 }
 
 
-static inline bool resize_vector(Vector* const v)
+static inline bool resize_vector(Vector* const v, unsigned long long need)
 {
-	const unsigned long long newbytes = ((unsigned long long)v->bytes) + (v->bytes / 2);
+	unsigned long long newbytes = need + v->bytes;
 
 	if (newbytes >= INT_MAX) {
 		fprintf(stderr, "Couldn't resize vector.");
@@ -71,10 +72,11 @@ static inline bool resize_vector(Vector* const v)
 }
 
 
-static inline void push_back(const void* const data, Vector* const v)
+static inline void vector_push_back(const void* const data, Vector* const v)
 {
 	if ((v->bidx + v->membsize) > v->bytes)
-		resize_vector(v);
+		if (!resize_vector(v, v->membsize * 10))
+			return;
 
 	char* const p = (char*) v->data;
 	memcpy(&p[v->bidx], data, v->membsize);
@@ -82,10 +84,11 @@ static inline void push_back(const void* const data, Vector* const v)
 }
 
 
-static inline void push_back_array(const void* const data, const int size, Vector* const v)
+static inline void vector_push_back_array(const void* const data, const int size, Vector* const v)
 {
-	while ((v->bidx + (v->membsize * size)) > v->bytes)
-		resize_vector(v);
+	if ((v->bidx + (v->membsize * size)) > v->bytes)
+		if (!resize_vector(v, v->membsize * size))
+			return;
 
 	char* const p = (char*) v->data;
 	memcpy(&p[v->bidx], data, v->membsize * size);
@@ -93,11 +96,18 @@ static inline void push_back_array(const void* const data, const int size, Vecto
 }
 
 
-static inline void pop_back(Vector* const v)
+static inline void vector_pop_back(Vector* const v)
 {
 	if (v->bidx > 0)
 		v->bidx -= v->membsize;
 }
+
+
+#define push_back_array(data, size, dest) \
+	_Generic((dest), Vector*: vector_push_back_array)(data, size, dest)
+
+#define push_back(data, dest) \
+	_Generic((dest), Vector*: vector_push_back)(data, dest)
 
 
 #endif

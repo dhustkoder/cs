@@ -1,31 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "common.h"
+#include "binary-search.h"
+#include "algorithms/sorting/quick-sort.h"
 
-
-static const int* binary_search(const int target, const int* const array, const int size)
+static bool compare(const void* const lhs, const void* const rhs)
 {
-	int min = 0;
-	int max = size - 1;
-	int guess;
-
-	while (min <= max) {
-		guess = (min + max) / 2;
-		if (array[guess] < target)
-			min = guess + 1;
-		else if (array[guess] > target)
-			max = guess - 1;
-		else
-			return &array[guess];
-	}
-
-	return NULL;
-}
-
-
-static int compare(const void* const lhs, const void* const rhs)
-{
-	return (*(int*)lhs) > (*(int*)rhs);
+	return (*(int*)lhs) < (*(int*)rhs);
 }	
 
 
@@ -39,10 +21,10 @@ int main(const int argc, const char* const * const argv)
 	const int target = (int) strtol(argv[argc - 1], NULL, 0);
 	const int size = argc - 2;
 	int* const array = make_array_from_strings(&argv[1], size);
-	qsort(array, size, sizeof(int), compare);
+	quick_sort(array, size, sizeof(int), compare);
 	print_array(array, size);
 
-	const int* const addr = binary_search(target, array, size);
+	const int* const addr = binary_search(array, size, sizeof(int), &target, compare);
 
 	if (addr)
 		printf("FOUND %d AT INDEX %d\n", target, (int) (addr - array));

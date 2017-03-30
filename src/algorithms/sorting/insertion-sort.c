@@ -1,17 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "common.h"
+#include "../../common.h"
+#include "insertion-sort.h"
 
 
-static void insertion_sort(int* const a, const int size)
+static inline bool compare(const void* a, const void* b)
 {
-	for (int i = 1; i < size - 1; ++i) {
-		for (int j = i; j > 0 && a[j] < a[j - 1]; --j) {
-			const int tmp = a[j];
-			a[j] = a[j - 1];
-			a[j - 1] = tmp;
-		}
-	}
+	return *((int*)a) < *((int*)b);
 }
 
 
@@ -24,7 +19,7 @@ int main(const int argc, const char* const* const argv)
 
 	const int size = argc - 1;
 	int* const arr = make_array_from_strings(argv + 1, size);
-	insertion_sort(arr, size);
+	insertion_sort(arr, size, sizeof(int), compare);
 	print_array(arr, size);
 	free(arr);
 	return EXIT_SUCCESS;

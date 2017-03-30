@@ -1,19 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "common.h"
+#include "../../common.h"
+#include "bubble-sort.h"
 
 
-static void bubble_sort(int* const a, const int size)
+static inline bool compare(const void* a, const void* b)
 {
-	for (int i = 0; i < size; ++i) {
-		for (int j = 0; j < (size - i - 1); ++j) {
-			if (a[j] > a[j + 1]) {
-				const int tmp = a[j];
-				a[j] = a[j + 1];
-				a[j + 1] = tmp;
-			}
-		}
-	}
+	return *((int*)a) < *((int*)b);
 }
 
 
@@ -25,10 +18,10 @@ int main(const int argc, const char* const* const argv)
 	}
 
 	const int size = argc - 1;
-	int* const array = make_array_from_strings(&argv[1], size);
-	bubble_sort(array, size);
-	print_array(array, size);
-	free(array);
+	int* const arr = make_array_from_strings(argv + 1, size);
+	bubble_sort(arr, size, sizeof(int), compare);
+	print_array(arr, size);
+	free(arr);
 	return EXIT_SUCCESS;
 }
 
