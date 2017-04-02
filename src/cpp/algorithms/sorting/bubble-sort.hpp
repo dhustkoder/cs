@@ -6,9 +6,12 @@ template<class T, class Fn>
 void bubble_sort(T* const data, const int size, Fn compare)
 {
 	T& a = *data;
+
 	for (int i = 0; i < size; ++i) {
 		for (int j = 0; j < (size - 1) - i; ++j) {
-			if (compare(a[j + 1], a [j])) {
+			const auto& f = a[j + 1];
+			const auto& s = a[j];
+			if (compare(f, s)) {
 				auto aux = std::move(a[j]);
 				a[j] = std::move(a[j + 1]);
 				a[j + 1] = std::move(aux);
