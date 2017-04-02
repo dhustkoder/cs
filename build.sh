@@ -20,11 +20,11 @@ compileCC ()
 	CXXFLAGS_DEBUG=$CFLAGS_DEBUG
 	CXXFLAGS_RELEASE=$CFLAGS_RELEASE
 
-	if ["$CC" == ""]; then
+	if [ "$CC" == "" ]; then
 		CC=gcc
 	fi
 
-	if ["$CXX" == ""]; then
+	if [ "$CXX" == "" ]; then
 		CXX=g++
 	fi
 
