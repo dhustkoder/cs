@@ -12,7 +12,11 @@ int main(int argc, char** argv)
 	}
 
 	auto nums = make_int_vector_from_strings(&argv[1], argc - 1);
-	bubble_sort(&nums, static_cast<int>(nums.size()));
+	bubble_sort(&nums, static_cast<int>(nums.size()),
+		[](int a, int b) {
+			return a < b;
+		});
+
 	print_data(nums);
 	return EXIT_SUCCESS;
 }
