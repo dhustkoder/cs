@@ -5,6 +5,9 @@
 template<class T, class Fn>
 void bubble_sort(T* const data, const int size, Fn compare)
 {
+	if (size < 2)
+		return;
+
 	T& a = *data;
 
 	for (int i = 0; i < size; ++i) {

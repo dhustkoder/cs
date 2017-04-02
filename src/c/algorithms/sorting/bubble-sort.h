@@ -3,8 +3,12 @@
 #include <stdbool.h>
 #include <string.h>
 
+
 static void bubble_sort(void* const array, const int nmemb, const int size, bool(*compare)(const void*, const void*))
 {
+	if (nmemb < 2)
+		return;
+
 	char tmp[size];
 	char* const a = (char*) array;
 	const int bytes = nmemb * size;

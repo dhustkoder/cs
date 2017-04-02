@@ -6,6 +6,9 @@
 
 static void insertion_sort(void* const array, const int nmemb, const int size, bool(*compare)(const void*, const void*))
 {
+	if (nmemb < 2)
+		return;
+
 	char tmp[size];
 	const int bytes = nmemb * size;
 	char* const a = (char*) array;

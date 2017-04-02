@@ -6,6 +6,9 @@
 template<class T, class Fn>
 void insertion_sort(T* const data, const int size, Fn compare)
 {
+	if (size < 2)
+		return;
+
 	T& a = *data;
 
 	for (int i = 1; i < size; ++i) {
