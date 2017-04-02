@@ -52,9 +52,9 @@ static inline void destroy_vector(Vector* const v)
 }
 
 
-static inline bool resize_vector(Vector* const v, unsigned long long need)
+static inline bool vector_resize(unsigned long long bytes, Vector* const v)
 {
-	unsigned long long newbytes = need + v->bytes;
+	unsigned long long newbytes = bytes + v->bytes;
 
 	if (newbytes >= INT_MAX) {
 		fprintf(stderr, "Couldn't resize vector.");
@@ -73,11 +73,23 @@ static inline bool resize_vector(Vector* const v, unsigned long long need)
 }
 
 
+static inline bool vector_ensure_capacity(const int nelem, Vector* const v)
+{
+	const unsigned long long bidx = v->bidx;
+	const unsigned long long membsize = v->membsize;
+	const unsigned long long newidx = bidx + membsize * nelem;
+
+	if (newidx > (unsigned long long) v->bytes)
+		return vector_resize(newidx + ((bidx / membsize) / 2), v);
+
+	return true;
+}
+
+
 static inline void vector_push_back(const void* const data, Vector* const v)
 {
-	if ((v->bidx + v->membsize) > v->bytes)
-		if (!resize_vector(v, v->membsize * 10))
-			return;
+	if (!vector_ensure_capacity(1, v))
+		return;
 
 	char* const p = (char*) v->data;
 	memcpy(&p[v->bidx], data, v->membsize);
@@ -87,9 +99,8 @@ static inline void vector_push_back(const void* const data, Vector* const v)
 
 static inline void vector_push_back_array(const void* const data, const int size, Vector* const v)
 {
-	if ((v->bidx + (v->membsize * size)) > v->bytes)
-		if (!resize_vector(v, v->membsize * size))
-			return;
+	if (!vector_ensure_capacity(size, v))
+		return;
 
 	char* const p = (char*) v->data;
 	memcpy(&p[v->bidx], data, v->membsize * size);

@@ -11,7 +11,7 @@ static bool compare(const void* a, const void* b)
 }
 
 
-int main(int argc, const char* const * argv)
+int main(const int argc, const char* const* const argv)
 {
 	if (argc < 3) {
 		fprintf(stderr, "Usage: %s [list]\n", argv[0]);

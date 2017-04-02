@@ -69,6 +69,7 @@ public:
 		return const_cast<T*>(static_cast<const Vector<T>&>(*this)->end());
 	}
 
+
 	void resize(unsigned long long need)
 	{
 		unsigned long long total = capacity() + need;
@@ -92,18 +93,22 @@ public:
 	}
 
 	
-	void reserve(int need)
+	void reserve(unsigned long long need)
 	{
-		if (need > capacity())
+		if (need > static_cast<unsigned long long>(capacity()))
 			resize(need - capacity());
+	}
+
+	
+	void ensure_capacity(unsigned long long need)
+	{
+		reserve((size() + need) + (size() / 2));
 	}
 
 
 	void push_back(T elem)
 	{
-		if (size() >= capacity())
-			resize(size() / 2);
-
+		ensure_capacity(1);
 		m_data[m_size++] = std::move(elem);
 	}
 
