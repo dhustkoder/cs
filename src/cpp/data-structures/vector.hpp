@@ -33,7 +33,7 @@ public:
 
 	T& operator[](int idx)
 	{
-		return static_cast<const Vector<T>&>(*this)[idx];
+		return const_cast<T&>(static_cast<const Vector<T>&>(*this)[idx]);
 	}
 
 	
@@ -72,16 +72,19 @@ public:
 
 	void resize(unsigned long long need)
 	{
-		unsigned long long total = capacity() + need;
-
-		if (total >= std::numeric_limits<int>::max())
+		if (need >= std::numeric_limits<int>::max())
 			throw std::runtime_error("Can't resize vector");
 
-		T* newbuf = new T[total];
+		T* newbuf = new T[need];
 
 		try {
-			for (int i = 0; i < size(); ++i)
+			const int limit = static_cast<int>(need) > size()
+			                  ? size()
+			                  : static_cast<int>(need);
+
+			for (int i = 0; i < limit; ++i)
 				newbuf[i] = m_data[i];
+
 		} catch (...) {
 			delete[] newbuf;
 			throw;
@@ -90,27 +93,33 @@ public:
 		delete[] m_data;
 		m_data = newbuf;
 		m_cap = static_cast<int>(need);
+
+		if (m_cap < m_size)
+			m_size = m_cap;
 	}
 
 	
 	void reserve(unsigned long long need)
 	{
 		if (need > static_cast<unsigned long long>(capacity()))
-			resize(need - capacity());
-	}
-
-	
-	void ensure_capacity(unsigned long long need)
-	{
-		reserve((size() + need) + (size() / 2));
+			resize(need + (size() / 2));
 	}
 
 
 	void push_back(T elem)
 	{
-		ensure_capacity(1);
+		ensure_capacity(size() + 1);
 		m_data[m_size++] = std::move(elem);
 	}
+
+
+private:
+	void ensure_capacity(unsigned long long need)
+	{
+		if (need > static_cast<unsigned long long>(capacity()))
+			reserve(need + (need / 2));
+	}
+
 
 private:
 	T* m_data;

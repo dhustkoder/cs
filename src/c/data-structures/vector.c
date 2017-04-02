@@ -25,14 +25,17 @@ int main(const int argc, const char* const* const argv)
 	if (arr == NULL)
 		return EXIT_FAILURE;
 
-	Vector* const v = create_vector(size, sizeof(int));
+	Vector* const v = create_vector(0, sizeof(int));
 
 	if (v == NULL) {
 		ret = EXIT_FAILURE;
 		goto arr_free;
 	}
 
-	push_back_array(arr, size, v);
+	for (int i = 0; i < (size / 2); ++i)
+		push_back(&arr[i], v);
+
+	push_back_array(&arr[(size / 2)], size - (size / 2), v);
 
 	const int vecsize = v->bidx / v->membsize;
 	puts("UNSORTED");
