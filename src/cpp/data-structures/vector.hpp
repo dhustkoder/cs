@@ -61,12 +61,12 @@ public:
 
 	T* begin()
 	{
-		return const_cast<T*>(static_cast<const Vector<T>&>(*this)->begin());
+		return const_cast<T*>(static_cast<const Vector<T>&>(*this).begin());
 	}
 
 	T* end()
 	{
-		return const_cast<T*>(static_cast<const Vector<T>&>(*this)->end());
+		return const_cast<T*>(static_cast<const Vector<T>&>(*this).end());
 	}
 
 

@@ -3,21 +3,16 @@
 #include <utility>
 
 template<class T, class Fn>
-void bubble_sort(T* const data, const int size, Fn compare)
+void bubble_sort(const T begin, const T end, Fn compare)
 {
-	if (size < 2)
-		return;
-
-	T& a = *data;
-
-	for (int i = 0; i < size; ++i) {
-		for (int j = 0; j < (size - 1) - i; ++j) {
-			const auto& f = a[j + 1];
-			const auto& s = a[j];
+	for (T i = begin; i < end; ++i) {
+		for (T j = begin; j < ((end - 1) - (i - begin)); ++j) {
+			const auto& f = *(j + 1);
+			const auto& s = *j;
 			if (compare(f, s)) {
-				auto aux = std::move(a[j]);
-				a[j] = std::move(a[j + 1]);
-				a[j + 1] = std::move(aux);
+				auto aux = std::move(*(j + 1));
+				*(j + 1) = std::move(*j);
+				*j = std::move(aux);
 			}
 		}
 	}

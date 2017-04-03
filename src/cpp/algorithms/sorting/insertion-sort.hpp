@@ -4,24 +4,19 @@
 
 
 template<class T, class Fn>
-void insertion_sort(T* const data, const int size, Fn compare)
+void insertion_sort(const T begin, const T end, Fn compare)
 {
-	if (size < 2)
-		return;
-
-	T& a = *data;
-
-	for (int i = 1; i < size; ++i) {
-		for (int j = i; j > 0; --j) {
-			const auto& f = a[j];
-			const auto& s = a[j - 1];
+	for (T i = begin; i < end; ++i) {
+		for (T j = i; j > begin; --j) {
+			const auto& f = *j;
+			const auto& s = *(j - 1);
 
 			if (!compare(f, s))
 				break;
 
-			auto aux = std::move(a[j]);
-			a[j] = std::move(a[j - 1]);
-			a[j - 1] = std::move(aux);
+			auto aux = std::move(*j);
+			*j = std::move(*(j - 1));
+			*(j - 1) = std::move(aux);
 		}
 	}
 }

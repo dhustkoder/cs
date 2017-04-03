@@ -23,7 +23,7 @@ int main(int argc, char** argv)
 
 	std::cout << "UNSORTED:\n";
 	print_data(vec);
-	bubble_sort(&vec, vec.size(), [] (int a, int b) { return a < b; });
+	bubble_sort(vec.begin(), vec.end(), [] (int a, int b) { return a < b; });
 	std::cout << "SORTED:\n";
 	print_data(vec);
 
