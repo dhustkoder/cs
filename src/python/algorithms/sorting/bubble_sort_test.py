@@ -22,11 +22,7 @@ if len(nums) < 2:
 
 print ("UNSORTED:")
 print_data(nums)
-
-bubble_sort(nums, lambda a, b: (a < b))
-
 print("SORTED:")
-print_data(nums)
-
+print_data(bubble_sort(nums, lambda a, b: (a < b)))
 sys.exit(os.EX_OK)
 
