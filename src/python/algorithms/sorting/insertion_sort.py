@@ -8,7 +8,7 @@ def insertion_sort(data, compare):
             aux = data[j - 1]
             data[j - 1] = data[j]
             data[j] = aux
-            j = j - 1
+            j -= 1
 
     return data
 

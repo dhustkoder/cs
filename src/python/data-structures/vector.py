@@ -13,7 +13,7 @@ class Vector:
         if self.currentIdx < len(self.data):
             idx = self.currentIdx
             elem = self.data[idx]
-            self.currentIdx = self.currentIdx + 1
+            self.currentIdx += 1
             return (idx, elem)
         else:
             self.currentIdx = 0
