@@ -14,7 +14,7 @@ compileCC ()
 	C_SRC_DIR="${SRCDIR}/c"
 	CXX_SRC_DIR="${SRCDIR}/cpp"
 	CFLAGS="-std=c11 -Wall -Wextra -pedantic"
-	CFLAGS_DEBUG="-O0 -ggdb -fsanitize=address"
+	CFLAGS_DEBUG="-O0 -ggdb -fsanitize=address -DCSDEBUG"
 	CFLAGS_RELEASE="-O3"
 	CXXFLAGS="-std=c++11 -Wall -Wextra -pedantic"
 	CXXFLAGS_DEBUG=$CFLAGS_DEBUG

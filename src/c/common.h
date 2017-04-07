@@ -18,6 +18,7 @@ static inline int* make_array_from_strings(const char* const* const strs, const 
 	return a;
 }
 
+#ifdef CSDEBUG
 
 static inline void print_array(const int* const a, const int size)
 {
@@ -25,6 +26,11 @@ static inline void print_array(const int* const a, const int size)
 		printf("[%d] = %d\n", i, a[i]);
 }
 
+#else
+
+#define print_array(a, size)
+
+#endif
 
 
 #endif

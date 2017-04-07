@@ -15,6 +15,7 @@ inline std::vector<int> make_int_vector_from_strings(const char* const * strs, c
 	return r;
 }
 
+#ifdef CSDEBUG
 
 template<class T>
 void print_data(const T& data)
@@ -23,5 +24,14 @@ void print_data(const T& data)
 		std::cout << x << '\n';
 }
 
+#else
+
+template<class T>
+void print_data(const T&)
+{
+	// DO NOTHING
+}
+
+#endif
 
 #endif
