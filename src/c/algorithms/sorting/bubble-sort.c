@@ -14,7 +14,7 @@ int main(const int argc, const char* const* const argv)
 	const int size = argc - 1;
 	int* const arr = make_array_from_strings(argv + 1, size);
 
-	sort_routine(arr, size, sizeof(int), bubble_sort, compare_int);
+	sort_routine(arr, size, sizeof(int), bubble_sort, cmp_int_less);
 
 	free(arr);
 	return EXIT_SUCCESS;

@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-static inline void* linear_search(void* const data,
+static inline const void* linear_search(const void* const data,
                                   const int nmemb,
 				  const int size,
 				  const void* value,
