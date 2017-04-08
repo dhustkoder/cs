@@ -4,6 +4,7 @@
 #include <vector>
 #include <iostream>
 
+
 inline std::vector<int> make_int_vector_from_strings(const char* const * strs, const int size)
 {
 	std::vector<int> r;
@@ -20,8 +21,9 @@ inline std::vector<int> make_int_vector_from_strings(const char* const * strs, c
 template<class T>
 void print_data(const T& data)
 {
-	for (const auto& x : data)
-		std::cout << x << '\n';
+	const int limit = static_cast<int>(data.size());
+	for (int i = 0; i < limit; ++i)
+		std::cout << '[' << i << ']' << " = " << data[i] << '\n';
 }
 
 #else

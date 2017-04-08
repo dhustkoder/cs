@@ -19,8 +19,13 @@ int main(const int argc, const char* const* const argv)
 
 	const int size = argc - 1;
 	int* const arr = make_array_from_strings(argv + 1, size);
-	quick_sort(arr, size, sizeof(int), compare);
+
+	printf("UNSORTED:");
 	print_array(arr, size);
+	quick_sort(arr, size, sizeof(int), compare);
+	printf("SORTED:");
+	print_array(arr, size);
+
 	free(arr);
 	return EXIT_SUCCESS;
 }

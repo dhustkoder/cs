@@ -19,10 +19,6 @@ int main(int argc, const char** argv)
 	const int size = argc - 2;
 	const int target = strtol(argv[argc - 1], NULL, 0);
 	int* const arr = make_array_from_strings(argv + 1, size);
-
-	if (arr == NULL)
-		return EXIT_FAILURE;
-
 	const int* const found = linear_search(arr, size, sizeof(int), &target, compare);
 
 	if (found != NULL)

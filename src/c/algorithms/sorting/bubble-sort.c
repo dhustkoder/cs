@@ -4,12 +4,6 @@
 #include "bubble-sort.h"
 
 
-static inline bool compare(const void* a, const void* b)
-{
-	return *((int*)a) < *((int*)b);
-}
-
-
 int main(const int argc, const char* const* const argv)
 {
 	if (argc < 3) {
@@ -19,8 +13,9 @@ int main(const int argc, const char* const* const argv)
 
 	const int size = argc - 1;
 	int* const arr = make_array_from_strings(argv + 1, size);
-	bubble_sort(arr, size, sizeof(int), compare);
-	print_array(arr, size);
+
+	sort_routine(arr, size, sizeof(int), bubble_sort, compare_int);
+
 	free(arr);
 	return EXIT_SUCCESS;
 }
