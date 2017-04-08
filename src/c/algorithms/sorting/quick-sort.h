@@ -1,6 +1,5 @@
 #ifndef CS_ALGORITHMS_QUICK_SORT_H_
 #define CS_ALGORITHMS_QUICK_SORT_H_
-#include <stdbool.h>
 #include <string.h>
 
 
@@ -8,7 +7,7 @@ static inline int quick_sort_part(char* const arr,
                                   const int beg,
 				  const int end,
 				  const int membsize,
-				  bool(*compare)(const void*, const void*))
+				  int(*cmp)(const void*, const void*))
 {
 	int l = beg + membsize;
 	int r = end;
@@ -16,9 +15,9 @@ static inline int quick_sort_part(char* const arr,
 	char tmp[membsize];
 
 	for (;;) {
-		while (l < r && compare(&arr[l], p))
+		while (l < r && cmp(&arr[l], p) < 0)
 			l += membsize;
-		while (r >= l && compare(p, &arr[r]))
+		while (r >= l && cmp(&arr[r], p) > 0)
 			r -= membsize;
 		
 		if (l >= r)
@@ -43,12 +42,12 @@ static inline void quick_sort_rec(char* const arr,
                                   const int beg,
 				  const int end,
 				  const int membsize,
-				  bool(*compare)(const void*, const void*))
+				  int(*cmp)(const void*, const void*))
 {
 	if ((end - beg) > 0) {
-		const int split = quick_sort_part(arr, beg, end, membsize, compare);
-		quick_sort_rec(arr, beg, split - membsize, membsize, compare);
-		quick_sort_rec(arr, split + membsize, end, membsize, compare);
+		const int split = quick_sort_part(arr, beg, end, membsize, cmp);
+		quick_sort_rec(arr, beg, split - membsize, membsize, cmp);
+		quick_sort_rec(arr, split + membsize, end, membsize, cmp);
 	}
 }
 
@@ -56,10 +55,10 @@ static inline void quick_sort_rec(char* const arr,
 static inline void quick_sort(void* const arr,
                               const int nmemb,
 			      const int size,
-			      bool(*compare)(const void*, const void*))
+			      int(*cmp)(const void*, const void*))
 {
 	if (nmemb > 1)
-		quick_sort_rec(arr, 0, (nmemb * size) - size, size, compare);
+		quick_sort_rec(arr, 0, (nmemb * size) - size, size, cmp);
 }
 
 

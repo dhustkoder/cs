@@ -5,12 +5,6 @@
 #include "algorithms/sorting/bubble-sort.h"
 
 
-static bool compare(const void* a, const void* b)
-{
-	return *((int*)a) < *((int*)b);
-}
-
-
 int main(const int argc, const char* const* const argv)
 {
 	if (argc < 3) {
@@ -40,7 +34,7 @@ int main(const int argc, const char* const* const argv)
 	const int vecsize = v->bidx / v->membsize;
 	puts("UNSORTED");
 	print_array((int*)v->data, vecsize);
-	bubble_sort(v->data, vecsize, v->membsize, compare);
+	bubble_sort(v->data, vecsize, v->membsize, cmp_int);
 	puts("SORTED");
 	print_array((int*)v->data, vecsize);
 

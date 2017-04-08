@@ -3,21 +3,15 @@
 #include "common.hpp"
 
 
+struct SortFun {
+	template<class T, class CmpFun>
+	void operator()(T begin, T end, CmpFun cmpfun) && {
+		return insertion_sort(begin, end, cmpfun);
+	}
+};
+
 
 int main(int argc, char** argv)
 {
-	if (argc < 3) {
-		std::cout << "Usage: " << argv[0] << "[list]\n";
-		return EXIT_FAILURE;
-	}
-
-	std::vector<int> v = make_int_vector_from_strings(argv + 1, argc - 1);
-	insertion_sort(v.begin(), v.end(), [](int a, int b) { return a < b; });
-
-	print_data(v);
-	return EXIT_SUCCESS;
+	return sort_test<SortFun>(argc, argv);
 }
-
-
-
-

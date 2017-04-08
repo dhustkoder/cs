@@ -16,7 +16,6 @@ inline std::vector<int> make_int_vector_from_strings(const char* const * strs, c
 	return r;
 }
 
-#ifdef CSDEBUG
 
 template<class T>
 void print_data(const T& data)
@@ -26,14 +25,61 @@ void print_data(const T& data)
 		std::cout << '[' << i << ']' << " = " << data[i] << '\n';
 }
 
-#else
 
-template<class T>
-void print_data(const T&)
+template<class SortFun>
+int sort_test(const int argc, const char* const * argv)
 {
-	// DO NOTHING
+	if (argc < 3) {
+		std::cerr << "Usage: " << argv[0] << " [list]\n";
+		return EXIT_FAILURE;
+	}
+
+	std::vector<int> v = make_int_vector_from_strings(argv + 1, argc - 1);
+
+#ifdef CSDEBUG
+	std::cout << "UNSORTED:\n";
+	print_data(v);
+#endif
+
+	SortFun()(v.begin(), v.end(), [](int a, int b) { return a < b; });
+
+	
+#ifdef CSDEBUG
+	std::cout << "SORTED:\n";
+	print_data(v);
+#endif
+
+
+	return EXIT_SUCCESS;
+}
+
+
+template<class SearchFun>
+int search_test(const int argc, const char* const * argv)
+{
+	if (argc < 4) {
+		std::cerr << "Usage: " << argv[0] << " [list] [target]\n";
+		return EXIT_FAILURE;
+	}
+
+	std::vector<int> v = make_int_vector_from_strings(argv + 1, argc - 1);
+	const int target = v.back();
+	v.pop_back();
+
+	const auto itr = SearchFun()(v.begin(), v.end(), target);
+
+#ifdef CSDEBUG
+	std::cout << "ARRAY:\n";
+	print_data(v);
+#endif
+
+	if (itr != v.end())
+		std::cout << "FOUND AT INDEX " << (itr - v.begin()) << '\n';
+	else
+		std::cout << "NOT FOUND\n";
+
+	return EXIT_SUCCESS;
 }
 
 #endif
 
-#endif

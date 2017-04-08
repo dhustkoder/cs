@@ -2,11 +2,11 @@
 #define CS_ALGORITHMS_BUBBLE_SORT_HPP_
 #include <utility>
 
-template<class T, class Fn>
-void bubble_sort(const T begin, const T end, Fn compare)
+template<class Itr, class Fn>
+void bubble_sort(const Itr begin, const Itr end, Fn compare)
 {
-	for (T i = begin; i < end; ++i) {
-		for (T j = begin; j < ((end - 1) - (i - begin)); ++j) {
+	for (Itr i = begin; i < end; ++i) {
+		for (Itr j = begin; j < ((end - 1) - (i - begin)); ++j) {
 			const auto& f = *(j + 1);
 			const auto& s = *j;
 			if (compare(f, s)) {

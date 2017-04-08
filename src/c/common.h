@@ -1,7 +1,6 @@
 #ifndef CS_COMMON_H_
 #define CS_COMMON_H_
 #include <stdlib.h>
-#include <stdbool.h>
 
 
 #define UNUSED(x) ((void)x)
@@ -23,21 +22,9 @@ static inline int* make_array_from_strings(const char* const* const strs, const 
 }
 
 
-static inline bool cmp_int_less(const void* a, const void* b)
+static inline int cmp_int(const void* a, const void* b)
 {
-	return *((int*)a) < *((int*)b);
-}
-
-
-static inline bool cmp_int_greater(const void* a, const void* b)
-{
-	return *((int*)a) > *((int*)b);
-}
-
-
-static inline bool cmp_int_eq(const void* a, const void* b)
-{
-	return *((int*)a) == *((int*)b);
+	return *((int*)a) - *((int*)b);
 }
 
 
@@ -71,39 +58,60 @@ static inline void print_str_array(const char* const * a, const int size)
 #endif
 
 
-static inline void sort_routine(void* const data, const int nmemb, const int size,
-                                void(*sortfun)(void*, int, int, bool(*)(const void*, const void*)),
-                                bool(*compare)(const void*, const void*))
+static inline int sort_test(const int argc, const char* const * const argv,
+                            void(*sortfun)(void*, int, int, int(*)(const void*, const void*)))
 {
+	if (argc < 3) {
+		fprintf(stderr, "Usage: %s [list]\n", argv[0]);
+		return EXIT_FAILURE;
+	}
+
+	const int size = argc - 1;
+	int* const data = make_array_from_strings(argv + 1, size);
 
 #ifdef CSDEBUG
 	printf("UNSORTED:\n");
-	print_array((int*)data, nmemb);
-	sortfun(data, nmemb, size, compare);
+	print_array(data, size);
+#endif
+	
+	sortfun(data, size, sizeof(int), cmp_int);
+	
+#ifdef CSDEBUG
 	printf("SORTED:\n");
-	print_array((int*)data, nmemb);
-#else
-	sortfun(data, nmemb, size, compare);
+	print_array(data, size);
 #endif
 
+	free(data);
+	return EXIT_SUCCESS;
 }
 
 
-static inline void search_routine(const void* const data, const int nmemb, const int size, const void* const target,
-                                  const void*(*searchfun)(const void*, int, int, const void*, bool(*)(const void*, const void*)),
-                                  bool(*compare)(const void*, const void*))
+static inline int search_test(const int argc, const char* const * argv,
+                              const void*(*const searchfun)(const void*, int, int, const void*, int(*)(const void*, const void*)))
 {
+	if (argc < 4) {
+		fprintf(stderr, "Usage: %s [list] [target]\n", argv[0]);
+		return EXIT_FAILURE;
+	}
+
+	const int size = argc - 2;
+	const int target = strtol(argv[argc - 1], NULL, 0);
+	int* const data = make_array_from_strings(argv + 1, size);
+
 #ifdef CSDEBUG
 	printf("ARRAY:\n");
-	print_array((int*)data, nmemb);
+	print_array(data, size);
 #endif
 
-	const void* found = searchfun(data, nmemb, size, target, compare);
+	const void* found = searchfun(data, size, sizeof(int), &target, cmp_int);
 
 	if (found != NULL)
-		printf("FOUND AT INDEX %d\n", (int)(((char*)found - (char*)data) / size));
+		printf("FOUND AT INDEX %d\n", (int)(((char*)found - (char*)data) / sizeof(int)));
 	else
 		printf("NOT FOUND\n");
+
+	free(data);
+	return EXIT_SUCCESS;
 }
 
 
