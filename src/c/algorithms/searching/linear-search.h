@@ -2,6 +2,7 @@
 #define CS_ALGORITHMS_SEARCHING_LINEAR_SEARCH_H_
 #include <stdlib.h>
 
+
 static inline const void* linear_search(const void* const data,
                                   const int nmemb,
 				  const int size,

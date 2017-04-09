@@ -2,6 +2,7 @@
 #define CS_ALGORITHMS_BUBBLE_SORT_HPP_
 #include <utility>
 
+
 template<class Itr, class Fn>
 void bubble_sort(const Itr begin, const Itr end, Fn compare)
 {
