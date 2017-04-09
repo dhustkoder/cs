@@ -10,5 +10,5 @@ from bubble_sort import bubble_sort
 from common import *
 
 
-sys.exit(sort_routine(bubble_sort))
+sys.exit(sort_test(bubble_sort))
 

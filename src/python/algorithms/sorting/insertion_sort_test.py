@@ -10,5 +10,5 @@ from insertion_sort import *
 from common import *
 
 
-sys.exit(sort_routine(insertion_sort))
+sys.exit(sort_test(insertion_sort))
 

@@ -88,7 +88,8 @@ static inline int sort_test(const int argc,
 	printf("SORTED:\n");
 	print_array(data, size);
 #endif
-
+	// escape memory to avoid optimization in release mode
+	printf("%d\n", data[size - 1]);
 	free(data);
 	return EXIT_SUCCESS;
 }
