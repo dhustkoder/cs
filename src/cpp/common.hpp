@@ -74,9 +74,9 @@ int search_test(const int argc, const char* const * argv)
 #endif
 
 	if (itr != v.end())
-		std::cout << "FOUND AT INDEX " << (itr - v.begin()) << '\n';
+		std::cout << target << " FOUND AT INDEX " << (itr - v.begin()) << '\n';
 	else
-		std::cout << "NOT FOUND\n";
+		std::cout << target << " NOT FOUND\n";
 
 	return EXIT_SUCCESS;
 }

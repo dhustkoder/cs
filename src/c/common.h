@@ -106,17 +106,20 @@ static inline int search_test_impl(const int argc,
 	const int target = strtol(argv[argc - 1], NULL, 0);
 	int* const data = make_array_from_strings(argv + 1, size);
 
+	const void* found = searchfun(data, size, sizeof(int), &target, cmp_int);
+
+
 #ifdef CSDEBUG
 	printf("ARRAY:\n");
 	print_array(data, size);
 #endif
 
-	const void* found = searchfun(data, size, sizeof(int), &target, cmp_int);
-
-	if (found != NULL)
-		printf("FOUND AT INDEX %d\n", (int)(((char*)found - (char*)data) / sizeof(int)));
-	else
-		printf("NOT FOUND\n");
+	if (found != NULL) {
+		const int index = (int) (((char*)found) - ((char*)data)) / sizeof(int);
+		printf("%d FOUND AT INDEX %d\n", target, index);
+	} else {
+		printf("%d NOT FOUND\n", target);
+	}
 
 	free(data);
 	return EXIT_SUCCESS;

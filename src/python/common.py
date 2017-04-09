@@ -11,40 +11,38 @@ def make_int_list_from_strings(strs):
     return l
 
 
-def print_data(data):
-    for elem in data:
-        print(elem)
+def sort_test(sortfun):
+    data = make_int_list_from_strings(sys.argv[1:])
 
-        
-def sort_routine(sortfun):
-    nums = make_int_list_from_strings(sys.argv[1:])
-
-    if len(nums) < 2:
+    if len(data) < 2:
         print("Usage: " + sys.argv[0] + " [list]")
         return os.EX_USAGE
 
-    print ("UNSORTED:")
-    print_data(nums)
+    print("UNSORTED:")
+    print(data)
     print("SORTED:")
-    sortfun(nums, lambda a, b: (a < b))
-    print_data(nums)
+    sortfun(data, lambda a, b: (a < b))
+    print(data)
     return os.EX_OK
 
 
-def search_routine(searchfun):
+def search_test(searchfun):
     data = make_int_list_from_strings(sys.argv[1:-1])
-    target = int(sys.argv[len(sys.argv) - 1])
 
     if len(data) < 3:
         print("Usage: " + sys.argv[0] + " [list] [target]")
         return os.EX_USAGE
 
+    target = int(sys.argv[len(sys.argv) - 1])
     index = searchfun(data, target)
 
+    print("ARRAY:")
+    print(data)
+
     if index != None:
-        print("Found " + str(target) + " at index \'" + str(index) + "\'")
+        print(str(target) + " FOUND AT INDEX " + str(index))
     else:
-        print("Not Found " + str(target))
+        print(str(target) + " NOT FOUND")
 
 
     return os.EX_OK

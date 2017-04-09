@@ -10,5 +10,5 @@ from quick_sort import *
 from common import *
 
 
-sys.exit(sort_routine(quick_sort))
+sys.exit(sort_test(quick_sort))
 
