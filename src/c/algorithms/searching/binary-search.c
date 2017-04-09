@@ -6,13 +6,13 @@
 #include "algorithms/sorting/quick-sort.h"
 
 
-static inline const void* binary_search_prep(const void* const data,
+static inline const void* binary_search_prep(void* const data,
                                              const int nmemb,
                                              const int size,
                                              const void* const target,
                                              int(* const cmp)(const void*, const void*))
 {
-	quick_sort((void*)data, nmemb, size, cmp);
+	quick_sort(data, nmemb, size, cmp);
 	return binary_search(data, nmemb, size, target, cmp);
 }
 

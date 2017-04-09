@@ -6,6 +6,12 @@
 #define UNUSED(x) ((void)x)
 
 
+typedef int(*CmpFun)(const void*, const void*);
+typedef const void*(*ConstSearchFun)(const void*, int, int, const void*, CmpFun);
+typedef const void*(*SearchFun)(void*, int, int, const void*, CmpFun);
+typedef void(*SortFun)(void*, int, int, CmpFun);
+
+
 static inline int* make_array_from_strings(const char* const* const strs, const int size)
 {
 	int* const a = malloc(sizeof(int) * size);
@@ -58,8 +64,9 @@ static inline void print_str_array(const char* const * a, const int size)
 #endif
 
 
-static inline int sort_test(const int argc, const char* const * const argv,
-                            void(*sortfun)(void*, int, int, int(*)(const void*, const void*)))
+static inline int sort_test(const int argc,
+                            const char* const * const argv,
+                            const SortFun sortfun)
 {
 	if (argc < 3) {
 		fprintf(stderr, "Usage: %s [list]\n", argv[0]);
@@ -86,8 +93,9 @@ static inline int sort_test(const int argc, const char* const * const argv,
 }
 
 
-static inline int search_test(const int argc, const char* const * argv,
-                              const void*(*const searchfun)(const void*, int, int, const void*, int(*)(const void*, const void*)))
+static inline int search_test_impl(const int argc,
+                                   const char* const * argv,
+                                   const SearchFun searchfun)
 {
 	if (argc < 4) {
 		fprintf(stderr, "Usage: %s [list] [target]\n", argv[0]);
@@ -113,6 +121,12 @@ static inline int search_test(const int argc, const char* const * argv,
 	free(data);
 	return EXIT_SUCCESS;
 }
+
+
+#define search_test(argc, argv, searchfun)                                        \
+                    _Generic((searchfun),                                         \
+                    ConstSearchFun: search_test_impl,                             \
+                    SearchFun: search_test_impl)(argc, argv, (SearchFun)searchfun)
 
 
 
