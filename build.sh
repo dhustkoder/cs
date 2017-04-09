@@ -8,7 +8,7 @@ BUILDDIR="${BASEDIR}/build"
 
 compileCC ()
 {
-	# compile C and C++ code
+	echo "BUILDING C AND C++ SOURCE CODE"
 	C_OUTPUT_DIR="${BUILDDIR}/c"
 	CXX_OUTPUT_DIR="${BUILDDIR}/cpp"
 	C_SRC_DIR="${SRCDIR}/c"
@@ -70,5 +70,20 @@ compileCC ()
 	done
 }
 
+
+compilePy ()
+{
+	echo "BUILDING PYTHON SOURCE CODE"
+	wd=$(pwd)
+	for pysrc in $(find "${SRCDIR}/python" -name '*test.py'); do
+		cd $(dirname $pysrc)
+		echo "${pysrc}: ${pysrc}"
+		python -m py_compile $(basename ${pysrc})
+		cd $wd
+	done
+}
+
+
 compileCC $@
+compilePy $@
 

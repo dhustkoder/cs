@@ -1,33 +1,30 @@
 #!/bin/python
 
+import logging
 import sys
 import os
 
-def make_int_list_from_strings(strs):
-    l = []
-    for elem in strs:
-        l.append(int(elem))
 
-    return l
+logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 
 def sort_test(sortfun):
-    data = make_int_list_from_strings(sys.argv[1:])
+    data = [int(i) for i in sys.argv[1:]]
 
     if len(data) < 2:
         print("Usage: " + sys.argv[0] + " [list]")
         return os.EX_USAGE
 
-    print("UNSORTED:")
-    print(data)
-    print("SORTED:")
+    logging.debug("UNSORTED:")
+    logging.debug(data)
+    logging.debug("SORTED:")
     sortfun(data, lambda a, b: (a < b))
-    print(data)
+    logging.debug(data)
     return os.EX_OK
 
 
 def search_test(searchfun):
-    data = make_int_list_from_strings(sys.argv[1:-1])
+    data = [int(i) for i in sys.argv[1:-1]]
     
     if len(data) < 2:
         print("Usage: " + sys.argv[0] + " [list]")
@@ -36,8 +33,8 @@ def search_test(searchfun):
     target = int(sys.argv[len(sys.argv) - 1])
     index = searchfun(data, target)
 
-    print("ARRAY:")
-    print(data)
+    logging.debug("ARRAY:")
+    logging.debug(data)
 
     if index != None:
         print(str(target) + " FOUND AT INDEX " + str(index))
