@@ -49,15 +49,16 @@ static inline void print_str_array(const char* const * a, const int size)
 
 #ifdef CSDEBUG
 
-#define print_array(array, size)                                  \
-	_Generic((array),                                         \
-	         const int*: print_int_array,                     \
-	         int*: print_int_array,                           \
-	         const char**: print_str_array,                   \
-	         char**: print_str_array)(array, size) 
+#define print_array(array, size)                         \
+        _Generic((array),                                \
+        const int*: print_int_array,                     \
+        int*: print_int_array,                           \
+        const char**: print_str_array,                   \
+        char**: print_str_array)(array, size)
+
 
 #else
-	         
+
 // do nothing
 #define print_array(...)
 
@@ -126,10 +127,10 @@ static inline int search_test_impl(const int argc,
 }
 
 
-#define search_test(argc, argv, searchfun)                                        \
-                    _Generic((searchfun),                                         \
-                    ConstSearchFun: search_test_impl,                             \
-                    SearchFun: search_test_impl)(argc, argv, (SearchFun)searchfun)
+#define search_test(argc, argv, searchfun)                            \
+	_Generic((searchfun),                                         \
+	ConstSearchFun: search_test_impl,                             \
+	SearchFun: search_test_impl)(argc, argv, (SearchFun)searchfun)
 
 
 

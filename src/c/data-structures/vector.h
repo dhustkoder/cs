@@ -24,24 +24,24 @@ static inline Vector* create_vector(const int nmemb, const int size)
 		return NULL;
 	}
 
-	Vector* const r = malloc(sizeof(Vector));
+	Vector* const v = malloc(sizeof(Vector));
 
-	if (r == NULL) {
+	if (v == NULL) {
 		fprintf(stderr, "Couldn't allocate memory");
 		return NULL;
 	}
 
-	r->data = malloc(bytes);
+	v->data = malloc(bytes);
 
-	if (r->data == NULL) {
+	if (v->data == NULL) {
 		fprintf(stderr, "Couldn't allocate memory");
 		return NULL;
 	}
 
-	r->membsize = size;
-	r->bytes = bytes;
-	r->bidx = 0;
-	return r;
+	v->membsize = size;
+	v->bytes = bytes;
+	v->bidx = 0;
+	return v;
 }
 
 
@@ -111,11 +111,13 @@ static inline void vector_pop_back(Vector* const v)
 }
 
 
-#define push_back_array(data, size, dest) \
-	_Generic((dest), Vector*: vector_push_back_array)(data, size, dest)
+#define push_back_array(data, size, dest)                 \
+        _Generic((dest),                                  \
+	Vector*: vector_push_back_array)(data, size, dest)
 
-#define push_back(data, dest) \
-	_Generic((dest), Vector*: vector_push_back)(data, dest)
+#define push_back(data, dest)                             \
+        _Generic((dest),                                  \
+        Vector*: vector_push_back)(data, dest)
 
 
 #endif

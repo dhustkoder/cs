@@ -28,9 +28,9 @@ def sort_test(sortfun):
 
 def search_test(searchfun):
     data = make_int_list_from_strings(sys.argv[1:-1])
-
-    if len(data) < 3:
-        print("Usage: " + sys.argv[0] + " [list] [target]")
+    
+    if len(data) < 2:
+        print("Usage: " + sys.argv[0] + " [list]")
         return os.EX_USAGE
 
     target = int(sys.argv[len(sys.argv) - 1])
