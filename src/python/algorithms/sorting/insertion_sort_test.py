@@ -10,19 +10,5 @@ from insertion_sort import *
 from common import *
 
 
-
-
-
-
-nums = make_int_list_from_strings(sys.argv[1:])
-
-if len(nums) < 2:
-    print("Usage: " + sys.argv[0] + " [list]")
-    sys.exit(os.EX_USAGE)
-
-print ("UNSORTED:")
-print_data(nums)
-print("SORTED:")
-print_data(insertion_sort(nums, lambda a, b: (a < b)))
-sys.exit(os.EX_OK)
+sys.exit(sort_routine(insertion_sort))
 
