@@ -33,3 +33,7 @@
 __pychace__/
 *.pyc
 
+
+# java
+*.class
+
