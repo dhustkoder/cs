@@ -1,10 +1,11 @@
+package src.java.algorithms.sorting;
 import java.util.*;
-import common.*;
+import src.java.common.*;
 
 
-public class BubbleSort implements common.SortFun {
+public class BubbleSort implements SortingAlgorithm {
 
-	public <T extends Comparable<T>> void sort(List<T> data)
+	public <T extends Comparable<T>> void execute(List<T> data)
 	{
 
 		for (int i = 0; i < data.size(); ++i) {
@@ -21,6 +22,6 @@ public class BubbleSort implements common.SortFun {
 
 	public static void main(String[] args)
 	{
-		common.Tests.sort(args, new BubbleSort());
+		src.java.common.Tests.sort(args, new BubbleSort());
 	}
 }

@@ -1,4 +1,4 @@
-package common;
+package src.java.common;
 import java.util.*;
 
 public class Utils {
@@ -16,7 +16,10 @@ public class Utils {
 
 	public static <T> void printData(final Collection<T> data)
 	{
-		for (T x : data)
-			System.out.println(x);
+		Integer i = 0;
+		for (T x : data) {
+			System.out.println("[" + i + "]" + " = " + x);
+			i += 1;
+		}
 	}
 }
