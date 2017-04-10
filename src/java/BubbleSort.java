@@ -1,6 +1,8 @@
 import java.util.*;
+import common.*;
 
-public class BubbleSort implements SortFun {
+
+public class BubbleSort implements common.SortFun {
 
 	public <T extends Comparable<T>> void sort(List<T> data)
 	{
@@ -17,9 +19,8 @@ public class BubbleSort implements SortFun {
 	}
 
 
-	static public void main(String[] args)
+	public static void main(String[] args)
 	{
-		Common.sortTest(args, new BubbleSort());
+		common.Tests.sort(args, new BubbleSort());
 	}
 }
-
