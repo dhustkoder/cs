@@ -7,8 +7,8 @@ public class Utils {
 	{
 		ArrayList<Integer> r = new ArrayList<Integer>();
 
-		for (int i = 0; i < strs.length; ++i)
-			r.add(Integer.parseInt(strs[i]));
+		for (String str : strs)
+			r.add(Integer.parseInt(str));
 
 		return r;
 	}

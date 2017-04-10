@@ -1,12 +1,13 @@
 package src.java.common;
-import src.java.algorithms.*;
+import src.java.common.Utils;
+import src.java.algorithms.sorting.SortingAlgorithm;
 import java.util.*;
 
 public class Tests {
 
-	public static void sort(final String args[], final src.java.algorithms.sorting.SortingAlgorithm sortAlgo)
+	public static void sort(final String args[], final SortingAlgorithm sortAlgo)
 	{
-		ArrayList<Integer> array = src.java.common.Utils.makeIntArrayFromStrings(args);
+		ArrayList<Integer> array = Utils.makeIntArrayFromStrings(args);
 
 		if (array.size() < 2) {
 			System.err.println("Usage: " + sortAlgo.getClass().getName() + " [list]");
@@ -14,12 +15,12 @@ public class Tests {
 		}
 
 		System.out.println("UNSORTED:");
-		src.java.common.Utils.printData(array);
+		Utils.printData(array);
 
 		sortAlgo.execute(array);
 
 		System.out.println("SORTED:");
-		src.java.common.Utils.printData(array);
+		Utils.printData(array);
 	}
 }
 

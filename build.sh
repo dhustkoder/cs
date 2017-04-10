@@ -84,6 +84,14 @@ compilePy ()
 }
 
 
+compileJava ()
+{
+	echo "BUILDING JAVA SOURCE CODE"
+	javac $(find "${SRCDIR}/java" -name '*.java')
+}
+
 compileCC $@
 compilePy $@
+compileJava $@
+
 

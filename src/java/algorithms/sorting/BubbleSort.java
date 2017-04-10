@@ -1,6 +1,6 @@
 package src.java.algorithms.sorting;
+import src.java.common.Tests;
 import java.util.*;
-import src.java.common.*;
 
 
 public class BubbleSort implements SortingAlgorithm {
@@ -22,6 +22,6 @@ public class BubbleSort implements SortingAlgorithm {
 
 	public static void main(String[] args)
 	{
-		src.java.common.Tests.sort(args, new BubbleSort());
+		Tests.sort(args, new BubbleSort());
 	}
 }
