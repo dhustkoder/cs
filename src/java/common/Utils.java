@@ -1,7 +1,9 @@
 package src.java.common;
 import java.util.*;
 
+
 public class Utils {
+
 
 	public static ArrayList<Integer> makeIntArrayFromStrings(final String strs[])
 	{
@@ -22,4 +24,6 @@ public class Utils {
 			i += 1;
 		}
 	}
+
+	
 }

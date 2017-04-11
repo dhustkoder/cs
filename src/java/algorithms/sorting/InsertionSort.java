@@ -6,6 +6,7 @@ import java.util.*;
 
 public class InsertionSort implements SortingAlgorithm {
 
+
 	public <T extends Comparable<T>> void execute(List<T> data)
 	{
 		for (int i = 1; i < data.size(); ++i) {
@@ -17,6 +18,7 @@ public class InsertionSort implements SortingAlgorithm {
 		}
 	}
 
+	
 	public static void main(String[] args)
 	{
 		Tests.sort(args, new InsertionSort());

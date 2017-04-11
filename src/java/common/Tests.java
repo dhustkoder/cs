@@ -3,7 +3,9 @@ import src.java.common.Utils;
 import src.java.algorithms.sorting.SortingAlgorithm;
 import java.util.*;
 
+
 public class Tests {
+
 
 	public static void sort(final String args[], final SortingAlgorithm sortAlgo)
 	{
@@ -22,5 +24,7 @@ public class Tests {
 		System.out.println("SORTED:");
 		Utils.printData(array);
 	}
+
+	
 }
 

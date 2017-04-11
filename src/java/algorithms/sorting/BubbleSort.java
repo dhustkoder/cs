@@ -5,6 +5,7 @@ import java.util.*;
 
 public class BubbleSort implements SortingAlgorithm {
 
+	
 	public <T extends Comparable<T>> void execute(List<T> data)
 	{
 
