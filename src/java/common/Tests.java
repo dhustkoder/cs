@@ -1,7 +1,7 @@
 package src.java.common;
 import src.java.common.Utils;
-import src.java.algorithms.sorting.SortingAlgorithm;
-import src.java.algorithms.searching.SearchingAlgorithm;
+import src.java.algorithms.sorting.*;
+import src.java.algorithms.searching.*;
 import java.util.*;
 
 
@@ -30,12 +30,19 @@ public class Tests {
 	public static void search(final String[] args, final SearchingAlgorithm searchAlgo)
 	{
 		final Integer target = Integer.parseInt(args[args.length - 1]);
-		final ArrayList<Integer> array = Utils.makeIntArrayFromStrings(Arrays.copyOf(args, args.length - 1));
+		ArrayList<Integer> array = Utils.makeIntArrayFromStrings(Arrays.copyOf(args, args.length - 1));
 
 		if (array.size() < 3) {
 			System.err.println("Usage: " + searchAlgo.getClass().getName() + " [list] [target]");
 			System.exit(-1);
 		}
+
+
+		if (searchAlgo instanceof BinarySearch) {
+			QuickSort qsort = new QuickSort();
+			qsort.execute(array);
+		}
+
 
 		System.out.println("ARRAY:");
 		Utils.printData(array);
