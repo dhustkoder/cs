@@ -87,7 +87,7 @@ compilePy ()
 compileJava ()
 {
 	echo "BUILDING JAVA SOURCE CODE"
-	javac $(find "${SRCDIR}/java" -name '*.java')
+	javac -Werror $(find "${SRCDIR}/java" -name '*.java')
 }
 
 compileCC $@
