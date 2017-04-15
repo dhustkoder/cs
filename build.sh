@@ -94,8 +94,37 @@ compileJava ()
 compileCSharp ()
 {
 	echo "BUILDING C# SOURCE CODE"
-	mcs -define:CSDEBUG -optimize- $(find "${SRCDIR}/csharp" -name '*.cs')
+	mode="$1"
+
+	if [[ "$mode" == "release" ]]; then
+		CSFLAGS="-optimize:+"
+	elif [[ "$mode" == "" || "$mode" == "debug" ]]; then
+		mode="debug"
+		CSFLAGS="-define:CSDEBUG -optimize:-"
+	fi
+
+	echo "Building in ${mode} mode"
+
+	CSINCLUDES=("${SRCDIR}/csharp/Common.cs" "${SRCDIR}/csharp/algorithms/sorting/ISortingAlgorithm.cs")
+
+	for file in $(find "${SRCDIR}/csharp" -name '*.cs'); do
+
+		shouldCompile=true
+
+		for elem in ${CSINCLUDES[@]}; do
+			if [[ "$elem" == "$file" ]]; then
+				shouldCompile=false
+				break
+			fi
+		done
+
+		if [ $shouldCompile == true ]; then
+			echo "Compiling ${file}..."
+			mcs ${CSFLAGS} ${file} ${CSINCLUDES[@]}
+		fi
+	done
 }
+
 
 compileCC $@
 compilePy $@
