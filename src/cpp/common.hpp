@@ -22,7 +22,7 @@ void print_data(const T& data)
 {
 	const int limit = static_cast<int>(data.size());
 	for (int i = 0; i < limit; ++i)
-		std::cout << '[' << i << ']' << " = " << data[i] << '\n';
+		std::cout << '[' << i << "] = " << data[i] << '\n';
 }
 
 

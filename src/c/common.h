@@ -47,8 +47,6 @@ static inline void print_str_array(const char* const * a, const int size)
 }
 
 
-#ifdef CSDEBUG
-
 #define print_array(array, size)                         \
         _Generic((array),                                \
         const int*: print_int_array,                     \
@@ -57,12 +55,6 @@ static inline void print_str_array(const char* const * a, const int size)
         char**: print_str_array)(array, size)
 
 
-#else
-
-// do nothing
-#define print_array(...)
-
-#endif
 
 
 static inline int sort_test(const int argc,

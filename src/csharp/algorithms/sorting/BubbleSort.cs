@@ -8,8 +8,6 @@ namespace Algorithms.Sorting
 
 	public class BubbleSort : ISortingAlgorithm
 	{
-
-
 		public void Execute<T>(List<T> data)
 		{
 			var comparer = Comparer<T>.Default;
@@ -30,10 +28,7 @@ namespace Algorithms.Sorting
 		{
 			return Tests.Sort(args, new BubbleSort());
 		}
-
-
 	}
-
-
+	
 }
 
