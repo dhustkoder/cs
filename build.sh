@@ -90,8 +90,15 @@ compileJava ()
 	javac -Werror $(find "${SRCDIR}/java" -name '*.java')
 }
 
+
+compileCSharp ()
+{
+	echo "BUILDING C# SOURCE CODE"
+	mcs $(find "${SRCDIR}/csharp" -name '*.cs')
+}
+
 compileCC $@
 compilePy $@
 compileJava $@
-
+compileCSharp $@
 
