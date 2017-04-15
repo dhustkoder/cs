@@ -94,7 +94,7 @@ compileJava ()
 compileCSharp ()
 {
 	echo "BUILDING C# SOURCE CODE"
-	mcs $(find "${SRCDIR}/csharp" -name '*.cs')
+	mcs -define:CSDEBUG -optimize- $(find "${SRCDIR}/csharp" -name '*.cs')
 }
 
 compileCC $@
