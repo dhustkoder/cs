@@ -45,7 +45,6 @@ namespace Common
 			Utils.PrintData(data);
 			#endif
 
-
 			sort.Execute(data);
 
 			#if CSDEBUG
