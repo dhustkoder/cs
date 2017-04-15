@@ -37,3 +37,9 @@ __pychace__/
 # java
 *.class
 
+
+
+# csharp
+*.exe
+*.so
+
