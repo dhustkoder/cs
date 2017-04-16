@@ -105,7 +105,8 @@ compileCSharp ()
 
 	echo "Building in ${mode} mode"
 
-	CSINCLUDES=("${SRCDIR}/csharp/Common.cs" "${SRCDIR}/csharp/algorithms/sorting/ISortingAlgorithm.cs")
+
+	CSINCLUDES=("${SRCDIR}/csharp/Common.cs" "${SRCDIR}/csharp/algorithms/sorting/ISortingAlgorithm.cs" "${SRCDIR}/csharp/algorithms/searching/ISearchingAlgorithm.cs")
 
 	for file in $(find "${SRCDIR}/csharp" -name '*.cs'); do
 
