@@ -94,6 +94,7 @@ compileJava ()
 compileCSharp ()
 {
 	echo "BUILDING C# SOURCE CODE"
+
 	mode="$1"
 
 	if [[ "$mode" == "release" ]]; then
@@ -106,9 +107,16 @@ compileCSharp ()
 	echo "Building in ${mode} mode"
 
 
-	CSINCLUDES=("${SRCDIR}/csharp/Common.cs" "${SRCDIR}/csharp/algorithms/sorting/ISortingAlgorithm.cs" "${SRCDIR}/csharp/algorithms/searching/ISearchingAlgorithm.cs")
+	CSINCLUDES=("${SRCDIR}/csharp/Common.cs"
+	            "${SRCDIR}/csharp/algorithms/sorting/ISortingAlgorithm.cs"
+		    "${SRCDIR}/csharp/algorithms/searching/ISearchingAlgorithm.cs")
 
-	for file in $(find "${SRCDIR}/csharp" -name '*.cs'); do
+
+	CSFILES=$(find "${SRCDIR}/csharp" -name '*.cs')
+
+	mkdir -p "${BUILDDIR}/csharp"
+
+	for file in ${CSFILES[@]}; do
 
 		shouldCompile=true
 
@@ -119,9 +127,40 @@ compileCSharp ()
 			fi
 		done
 
+
 		if [ $shouldCompile == true ]; then
-			echo "Compiling ${file}..."
-			mcs ${CSFLAGS} ${file} ${CSINCLUDES[@]}
+
+			mainClass=${file#"${SRCDIR}/csharp/"}
+			mainClass=${mainClass%'.cs'}
+
+			index=0
+			c="${mainClass:$index:1}"	
+			mainClass="${c^^}${mainClass:1}"
+			index=$((index + 1))
+
+			while [[ "$index" -lt ${#mainClass} ]]; do
+
+				if [[ "${mainClass:$index:1}" == "/" ]]; then
+					at=$((index + 1))
+					c="${mainClass:$at:1}"
+					at=$((at + 1))
+					mainClass="${mainClass:0:$index}.${c^^}${mainClass:$at}"
+				fi
+
+				index=$((index + 1))
+			done
+
+			otherFiles=""
+			for f in ${CSFILES}; do
+				if [[ "$file" != "$f" ]]; then
+					otherFiles="${otherFiles} ${f}"
+				fi
+			done
+
+			echo "Compiling ${mainClass}"
+			outname=$(basename ${file})
+			outname="${BUILDDIR}/csharp/${outname%'.cs'}-$mode.exe"
+			mcs ${CSFLAGS} -main:${mainClass} ${file} ${otherFiles} -out:${outname}
 		fi
 	done
 }

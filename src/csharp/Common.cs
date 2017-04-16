@@ -57,6 +57,7 @@ namespace Common
 		public static int Search(string[] args, ISearchingAlgorithm search)
 		{
 			var data = Utils.MakeIntListFromStrings(args);
+
 			if (data.Count < 3) {
 				Console.Error.WriteLine("Usage: " + AppDomain.CurrentDomain.FriendlyName + " [list] [target]");
 				return -1;
@@ -65,19 +66,22 @@ namespace Common
 			int target = data[data.Count - 1];
 			data.RemoveAt(data.Count - 1);
 
-
-			int idx = search.Execute(data, target);
+			if (search is BinarySearch) {
+				var qsort = new QuickSort();
+				qsort.Execute(data);
+			}
 
 			#if CSDEBUG
 			Console.WriteLine("ARRAY:");
 			Utils.PrintData(data);
 			#endif
 
+			int idx = search.Execute(data, target);
+
 			if (idx != data.Count)
 				Console.WriteLine(target + " FOUND AT INDEX " + idx);
 			else
 				Console.WriteLine(target + " NOT FOUND");
-
 
 			return 0;
 		}
