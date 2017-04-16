@@ -97,10 +97,10 @@ compileCSharp ()
 	mode="$1"
 
 	if [[ "$mode" == "release" ]]; then
-		CSFLAGS="-optimize:+"
+		CSFLAGS="-optimize:+ -warn:4 -warnaserror:+"
 	elif [[ "$mode" == "" || "$mode" == "debug" ]]; then
 		mode="debug"
-		CSFLAGS="-define:CSDEBUG -optimize:-"
+		CSFLAGS="-define:CSDEBUG -optimize:- -warn:4 -warnaserror:+"
 	fi
 
 	echo "Building in ${mode} mode"
