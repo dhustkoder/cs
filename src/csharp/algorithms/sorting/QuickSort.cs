@@ -2,8 +2,10 @@ using Common;
 using System;
 using System.Collections.Generic;
 
+
 namespace Algorithms.Sorting
 {
+
 	public class QuickSort : ISortingAlgorithm
 	{
 
@@ -39,13 +41,14 @@ namespace Algorithms.Sorting
 				if (l >= r)
 					break;
 
-				T tmp = data[l];
-				data[l] = data[r];
-				data[r] = tmp;
+				T tmp = data[r];
+				data[r] = data[l];
+				data[l] = tmp;
 
 				l += 1;
 				r -= 1;
 			}
+
 
 			T aux = data[r];
 			data[r] = data[beg];
