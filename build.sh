@@ -64,7 +64,7 @@ compileCC ()
 			fi
 
 			outname="${OUTDIRS[$i]}/${fname%${FILETYPES[$i]}}-${mode}.out"
-			echo "${file}: ${outname}"
+			echo "Compiling ${file}: ${outname}"
 			${COMPILERS[$i]} ${FLAGS[$i]} -I ${SRCDIRS[$i]} -o $outname $file
 		done
 	done
@@ -77,7 +77,7 @@ compilePy ()
 	wd=$(pwd)
 	for pysrc in $(find "${SRCDIR}/python" -name '*test.py'); do
 		cd $(dirname $pysrc)
-		echo "${pysrc}: ${pysrc}"
+		echo "Compiling ${pysrc}: ${pysrc}"
 		python -m py_compile $(basename ${pysrc})
 		cd $wd
 	done
@@ -157,9 +157,9 @@ compileCSharp ()
 				fi
 			done
 
-			echo "Compiling ${mainClass}"
 			outname=$(basename ${file})
 			outname="${BUILDDIR}/csharp/${outname%'.cs'}-$mode.exe"
+			echo "Compiling ${file}: ${outname}"
 			mcs ${CSFLAGS} -main:${mainClass} ${file} ${otherFiles} -out:${outname}
 		fi
 	done
