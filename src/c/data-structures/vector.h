@@ -111,14 +111,5 @@ static inline void vector_pop_back(Vector* const v)
 }
 
 
-#define push_back_array(data, size, dest)                 \
-        _Generic((dest),                                  \
-	Vector*: vector_push_back_array)(data, size, dest)
-
-#define push_back(data, dest)                             \
-        _Generic((dest),                                  \
-        Vector*: vector_push_back)(data, dest)
-
-
 #endif
 

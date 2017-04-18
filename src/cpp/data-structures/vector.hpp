@@ -18,11 +18,33 @@ public:
 	}
 
 
+	Vector(Vector&& rhs)
+		: m_data(rhs.m_data),
+		m_size(rhs.m_size),
+		m_cap(rhs.m_cap)
+	{
+		rhs.m_data = nullptr;
+		rhs.m_size = 0;
+		rhs.m_cap = 0;
+	}
+
+
 	~Vector()
 	{
 		delete[] m_data;
 	}
 
+
+	Vector& operator=(Vector&& rhs)
+	{
+		if (&rhs != this) {
+			m_data = rhs.m_data;
+			m_size = rhs.m_size;
+			m_cap = rhs.m_cap;
+		}
+
+		return *this;
+	}
 
 
 	const T& operator[](int idx) const
@@ -110,6 +132,18 @@ public:
 	{
 		ensure_capacity(size() + 1);
 		m_data[m_size++] = std::move(elem);
+	}
+
+
+	T pop_back()
+	{
+		return std::move(m_data[--m_size]);
+	}
+
+
+	T& back()
+	{
+		return m_data[size() - 1];
 	}
 
 

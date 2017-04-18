@@ -1,13 +1,13 @@
 #ifndef CS_COMMON_HPP_
 #define CS_COMMON_HPP_
 #include <cstring>
-#include <vector>
 #include <iostream>
+#include "data-structures/vector.hpp"
 
 
-inline std::vector<int> make_int_vector_from_strings(const char* const * strs, const int size)
+inline Vector<int> create_int_vector_from_strings(const char* const * strs, const int size)
 {
-	std::vector<int> r;
+	Vector<int> r;
 	r.reserve(size);
 
 	for (int i = 0; i < size; ++i)
@@ -34,7 +34,7 @@ int sort_test(const int argc, const char* const * argv)
 		return EXIT_FAILURE;
 	}
 
-	std::vector<int> v = make_int_vector_from_strings(argv + 1, argc - 1);
+	Vector<int> v = create_int_vector_from_strings(argv + 1, argc - 1);
 
 #ifdef CSDEBUG
 	std::cout << "UNSORTED:\n";
@@ -43,7 +43,6 @@ int sort_test(const int argc, const char* const * argv)
 
 	SortFun()(v.begin(), v.end(), [](int a, int b) { return a < b; });
 
-	
 #ifdef CSDEBUG
 	std::cout << "SORTED:\n";
 	print_data(v);
@@ -62,10 +61,8 @@ int search_test(const int argc, const char* const * argv)
 		return EXIT_FAILURE;
 	}
 
-	std::vector<int> v = make_int_vector_from_strings(argv + 1, argc - 1);
-	const int target = v.back();
-	v.pop_back();
-
+	Vector<int> v = create_int_vector_from_strings(argv + 1, argc - 1);
+	const int target = v.pop_back();
 	const auto itr = SearchFun()(v.begin(), v.end(), target);
 
 #ifdef CSDEBUG

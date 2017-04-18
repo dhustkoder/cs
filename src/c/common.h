@@ -1,7 +1,7 @@
 #ifndef CS_COMMON_H_
 #define CS_COMMON_H_
 #include <stdlib.h>
-
+#include "data-structures/ds-generics.h"
 
 #define UNUSED(x) ((void)x)
 
@@ -12,19 +12,16 @@ typedef const void*(*SearchFun)(void*, int, int, const void*, CmpFun);
 typedef void(*SortFun)(void*, int, int, CmpFun);
 
 
-static inline int* make_array_from_strings(const char* const* const strs, const int size)
+static inline Vector* create_int_vector_from_strings(const char* const* const strs, const int size)
 {
-	int* const a = malloc(sizeof(int) * size);
+	Vector* const v = create_vector(size, sizeof(int));
 
-	if (a == NULL) {
-		fprintf(stderr, "Couldn't allocate memory");
-		exit(EXIT_FAILURE);
+	for (int i = 0; i < size; ++i) {
+		const int num = strtol(strs[i], NULL, 0);
+		push_back(&num, v);
 	}
 
-	for (int i = 0; i < size; ++i)
-		a[i] = strtol(strs[i], NULL, 0);
-
-	return a;
+	return v;
 }
 
 
@@ -67,22 +64,22 @@ static inline int sort_test(const int argc,
 	}
 
 	const int size = argc - 1;
-	int* const data = make_array_from_strings(argv + 1, size);
+	Vector* const vec = create_int_vector_from_strings(argv + 1, size);
 
 #ifdef CSDEBUG
 	printf("UNSORTED:\n");
-	print_array(data, size);
+	print_array((int*)vec->data, size);
 #endif
-	
-	sortfun(data, size, sizeof(int), cmp_int);
+
+	sortfun((int*)vec->data, size, sizeof(int), cmp_int);
 	
 #ifdef CSDEBUG
 	printf("SORTED:\n");
-	print_array(data, size);
+	print_array((int*)vec->data, size);
 #endif
 	// escape memory to avoid optimization in release mode
-	printf("%d\n", data[size - 1]);
-	free(data);
+	printf("%d\n", ((int*)vec->data)[size - 1]);
+	destroy_vector(vec);
 	return EXIT_SUCCESS;
 }
 
@@ -98,24 +95,23 @@ static inline int search_test_impl(const int argc,
 
 	const int size = argc - 2;
 	const int target = strtol(argv[argc - 1], NULL, 0);
-	int* const data = make_array_from_strings(argv + 1, size);
+	Vector* const vec = create_int_vector_from_strings(argv + 1, size);
 
-	const int* const found = searchfun(data, size, sizeof(int), &target, cmp_int);
-
+	const int* const found = searchfun((int*)vec->data, size, sizeof(int), &target, cmp_int);
 
 #ifdef CSDEBUG
 	printf("ARRAY:\n");
-	print_array(data, size);
+	print_array((int*)vec->data, size);
 #endif
 
 	if (found != NULL) {
-		const int index = (int) (found - data);
+		const int index = (int) (found - ((int*)vec->data));
 		printf("%d FOUND AT INDEX %d\n", target, index);
 	} else {
 		printf("%d NOT FOUND\n", target);
 	}
 
-	free(data);
+	destroy_vector(vec);
 	return EXIT_SUCCESS;
 }
 
