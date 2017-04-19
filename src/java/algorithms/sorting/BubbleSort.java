@@ -1,14 +1,14 @@
 package src.java.algorithms.sorting;
+import src.java.data_structures.*;
 import src.java.common.Tests;
 import java.util.*;
 
 
-public class BubbleSort implements SortingAlgorithm {
+public class BubbleSort implements SortingAlgorithm
+{
 
-	
-	public <T extends Comparable<T>> void execute(List<T> data)
+	public <T extends Comparable<T>> void execute(DataStructure<T> data)
 	{
-
 		for (int i = 0; i < data.size(); ++i) {
 			for (int j = 0; j < (data.size() - 1) - i; ++j) {
 				if (data.get(j + 1).compareTo(data.get(j)) < 0) {
@@ -25,4 +25,5 @@ public class BubbleSort implements SortingAlgorithm {
 	{
 		Tests.sort(args, new BubbleSort());
 	}
+	
 }

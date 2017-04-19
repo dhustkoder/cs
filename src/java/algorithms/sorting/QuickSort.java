@@ -1,19 +1,20 @@
 package src.java.algorithms.sorting;
+import src.java.data_structures.*;
 import src.java.common.Tests;
 import java.util.*;
 
 
-public class QuickSort implements SortingAlgorithm {
+public class QuickSort implements SortingAlgorithm
+{
 
-
-	public <T extends Comparable<T>> void execute(List<T> data)
+	public <T extends Comparable<T>> void execute(DataStructure<T> data)
 	{
 		if (data.size() > 1)
 			sort(0, data.size(), data);
 	}
 
 
-	private <T extends Comparable<T>> void sort(final int begin, final int end, List<T> data)
+	private <T extends Comparable<T>> void sort(final int begin, final int end, DataStructure<T> data)
 	{
 		if ((end - begin) > 1) {
 			final int p = partitionate(begin, end, data);
@@ -23,7 +24,7 @@ public class QuickSort implements SortingAlgorithm {
 	}
 
 
-	private <T extends Comparable<T>> int partitionate(int l, int r, List<T> data)
+	private <T extends Comparable<T>> int partitionate(int l, int r, DataStructure<T> data)
 	{
 		final int p = l;
 		++l;
@@ -61,6 +62,5 @@ public class QuickSort implements SortingAlgorithm {
 	{
 		Tests.sort(args, new QuickSort());
 	}
-
-
+	
 }

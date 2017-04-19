@@ -1,29 +1,27 @@
 package src.java.common;
-import java.util.*;
+import java.util.Collection;
+import src.java.data_structures.DataStructure;
+import src.java.data_structures.Vector;
 
 
-public class Utils {
+public class Utils 
+{
 
-
-	public static ArrayList<Integer> makeIntArrayFromStrings(final String strs[])
+	public static Vector<Integer> makeIntArrayFromStrings(final String strs[])
 	{
-		ArrayList<Integer> r = new ArrayList<Integer>();
+		Vector<Integer> r = new Vector<Integer>(Integer.class, strs.length);
 
-		for (String str : strs)
-			r.add(Integer.parseInt(str));
+		for (final String str : strs)
+			r.pushBack(Integer.parseInt(str));
 
 		return r;
 	}
 
 
-	public static <T> void printData(final Collection<T> data)
+	public static <T> void printData(final DataStructure<T> data)
 	{
-		Integer i = 0;
-		for (T x : data) {
-			System.out.println("[" + i + "]" + " = " + x);
-			i += 1;
-		}
+		for (int i = 0; i < data.size(); ++i)
+			System.out.println("[" + i + "]" + " = " + data.get(i));
 	}
 
-	
 }

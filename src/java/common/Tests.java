@@ -2,15 +2,15 @@ package src.java.common;
 import src.java.common.Utils;
 import src.java.algorithms.sorting.*;
 import src.java.algorithms.searching.*;
-import java.util.*;
+import src.java.data_structures.*;
 
 
-public class Tests {
-
+public class Tests 
+{
 
 	public static void sort(final String[] args, final SortingAlgorithm sortAlgo)
 	{
-		ArrayList<Integer> array = Utils.makeIntArrayFromStrings(args);
+		Vector<Integer> array = Utils.makeIntArrayFromStrings(args);
 
 		if (array.size() < 2) {
 			System.err.println("Usage: " + sortAlgo.getClass().getName() + " [list]");
@@ -29,8 +29,8 @@ public class Tests {
 
 	public static void search(final String[] args, final SearchingAlgorithm searchAlgo)
 	{
-		final Integer target = Integer.parseInt(args[args.length - 1]);
-		ArrayList<Integer> array = Utils.makeIntArrayFromStrings(Arrays.copyOf(args, args.length - 1));
+		Vector<Integer> array = Utils.makeIntArrayFromStrings(args);
+		final Integer target = array.popBack();
 
 		if (array.size() < 3) {
 			System.err.println("Usage: " + searchAlgo.getClass().getName() + " [list] [target]");
@@ -47,10 +47,10 @@ public class Tests {
 		System.out.println("ARRAY:");
 		Utils.printData(array);
 
-		final Integer found = searchAlgo.execute(array, target);
+		final Integer index = searchAlgo.execute(array, target);
 
-		if (found != null)
-			System.out.println(found + " FOUND AT " + array.indexOf(found));
+		if (index != array.size())
+			System.out.println(target + " FOUND AT INDEX " + index);
 		else
 			System.out.println(target + " NOT FOUND");
 	}
