@@ -11,13 +11,12 @@ Itr binary_search(const Itr begin, const Itr end, const T& target)
 
 	while (min <= max) {
 		const int guess = (min + max) / 2;
-		if (*(begin + guess) < target) {
+		if (*(begin + guess) < target)
 			min = guess + 1;
-		} else if (*(begin + guess) > target) {
+		else if (*(begin + guess) > target)
 			max = guess - 1;
-		} else {
+		else
 			return begin + guess;
-		}
 	}
 
 	return end;
