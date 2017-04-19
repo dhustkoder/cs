@@ -1,7 +1,7 @@
 #!/bin/python
 
 
-def quick_sort_part(l, r, data, compare):
+def quickSortPart(l, r, data, compare):
     p = l
     l = l + 1
     r = r - 1
@@ -31,15 +31,15 @@ def quick_sort_part(l, r, data, compare):
     return r
 
 
-def quick_sort(data, compare):
+def quickSort(data, compare):
 
 
-    def qsort_impl(l, r, data, compare):
+    def qsortImpl(l, r, data, compare):
         if (r - l) > 1:
-            p = quick_sort_part(l, r, data, compare)
-            qsort_impl(p + 1, r, data, compare)
-            qsort_impl(l, p, data, compare)
+            p = quickSortPart(l, r, data, compare)
+            qsortImpl(p + 1, r, data, compare)
+            qsortImpl(l, p, data, compare)
 
-    qsort_impl(0, len(data), data, compare)
+    qsortImpl(0, len(data), data, compare)
     return data
 

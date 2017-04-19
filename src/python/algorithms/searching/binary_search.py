@@ -1,7 +1,7 @@
 #!/bin/python
 
 
-def binary_search(data, target):
+def binarySearch(data, target):
     l = 0
     r = len(data) - 1
     while r >= l:

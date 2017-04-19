@@ -4,37 +4,54 @@ import logging
 import sys
 import os
 
-
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)) + "/data-structures/")
 
-def sort_test(sortfun):
-    data = [int(i) for i in sys.argv[1:]]
+from vector import *
 
-    if len(data) < 2:
+
+def makeIntVectorFromStrings(strings):
+    data = Vector()
+    for str in strings:
+        data.pushBack(int(str))
+    return data
+
+
+def printData(data):
+    for elem in data:
+        logging.debug(elem)
+
+
+def sortTest(sortfun):
+
+    data = makeIntVectorFromStrings(sys.argv[1:]);
+
+    if data.size() < 2:
         print("Usage: " + sys.argv[0] + " [list]")
         return os.EX_USAGE
 
     logging.debug("UNSORTED:")
-    logging.debug(data)
+    printData(data)
     logging.debug("SORTED:")
     sortfun(data, lambda a, b: (a < b))
-    logging.debug(data)
+    printData(data)
     return os.EX_OK
 
 
-def search_test(searchfun):
-    data = [int(i) for i in sys.argv[1:-1]]
+def searchTest(searchfun):
+
+    data = makeIntVectorFromStrings(sys.argv[1:])
     
-    if len(data) < 2:
+    if data.size() < 2:
         print("Usage: " + sys.argv[0] + " [list]")
         return os.EX_USAGE
 
-    target = int(sys.argv[len(sys.argv) - 1])
+    target = data.popBack()
     index = searchfun(data, target)
 
     logging.debug("ARRAY:")
-    logging.debug(data)
+    printData(data)
 
     if index != None:
         print(str(target) + " FOUND AT INDEX " + str(index))

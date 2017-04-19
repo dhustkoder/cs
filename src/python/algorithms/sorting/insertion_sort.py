@@ -1,6 +1,6 @@
 #!/bin/python
 
-def insertion_sort(data, compare):
+def insertionSort(data, compare):
 
     for n in range(1, len(data)):
         j = n

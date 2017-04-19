@@ -9,7 +9,7 @@ from linear_search import *
 from common import *
 
 
-sys.exit(search_test(linear_search))
+sys.exit(searchTest(linearSearch))
 
 
 
