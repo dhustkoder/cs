@@ -1,24 +1,27 @@
 #ifndef CS_ALGORITHMS_BUBBLE_SORT_H_
 #define CS_ALGORITHMS_BUBBLE_SORT_H_
 #include <string.h>
+#include "utils.h"
 
 
-static inline void bubble_sort(void* const array, const int nmemb, const int size, int(*cmp)(const void*, const void*))
+static inline void bubble_sort(const Iterator begin,
+                               const Iterator end,
+			       const int size,
+			       const CmpFun cmp,
+			       const AdvanceFun advance)
 {
-	if (nmemb < 2)
-		return;
+	unsigned char tmp[size];
 
-	char tmp[size];
-	char* const a = (char*) array;
-	const int bytes = nmemb * size;
-
-	for (int i = 0; i < bytes; i += size) {
-		const int end = (bytes - size) - i;
-		for (int j = 0; j < end; j += size) {
-			if (cmp(&a[j + size], &a[j]) < 0) {
-				memcpy(tmp, &a[j + size], size);
-				memcpy(&a[j + size], &a[j], size);
-				memcpy(&a[j], tmp, size);
+	for (Iterator it = begin; it.ptr != end.ptr; advance(&it, 1)) {
+		Iterator jend = end;
+		advance(&jend, -(1 + it.index));
+		for (Iterator j = begin; j.ptr != jend.ptr; advance(&j, 1)) {
+			Iterator jnext = j;
+			advance(&jnext, 1);
+			if (cmp(jnext.ptr, j.ptr) < 0) {
+				memcpy(tmp, jnext.ptr, size);
+				memcpy(jnext.ptr, j.ptr, size);
+				memcpy(j.ptr, tmp, size);
 			}
 		}
 	}

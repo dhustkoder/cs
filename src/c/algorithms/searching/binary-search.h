@@ -2,11 +2,12 @@
 #define CS_ALGORITHMS_BINARY_SEARCH_H_
 #include "utils.h"
 
-static inline const void* binary_search(const ConstIterator begin,
-                                        const ConstIterator end,
-					const void* const target,
-					const CmpFun cmp,
-					const ConstAdvanceFun advance)
+
+static inline ConstIterator binary_search(const ConstIterator begin,
+                                          const ConstIterator end,
+					  const void* const target,
+					  const CmpFun cmp,
+					  const ConstAdvanceFun advance)
 {
 	int min = 0;
 	int max = end.index - 1;
@@ -21,10 +22,10 @@ static inline const void* binary_search(const ConstIterator begin,
 		else if (result > 0)
 			max = guess - 1;
 		else
-			return it.ptr;
+			return it;
 	}
 
-	return NULL;
+	return end;
 }
 
 

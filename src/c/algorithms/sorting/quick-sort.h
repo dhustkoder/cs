@@ -3,62 +3,56 @@
 #include <string.h>
 
 
-static inline int quick_sort_part(char* const arr,
-                                  const int beg,
-				  const int end,
-				  const int membsize,
-				  int(*cmp)(const void*, const void*))
+static inline Iterator quick_sort_part(const Iterator begin,
+                                       const Iterator end,
+				       const int size,
+				       const CmpFun cmp,
+				       const AdvanceFun advance)
 {
-	int l = beg + membsize;
-	int r = end;
-	void* const p = &arr[beg];
-	char tmp[membsize];
+	Iterator l = begin;
+	advance(&l, 1);
+	Iterator r = end;
+	advance(&r, -1);
+
+	void* const p = begin.ptr;
+	unsigned char tmp[size];
 
 	for (;;) {
-		while (l < r && cmp(&arr[l], p) < 0)
-			l += membsize;
-		while (r >= l && cmp(&arr[r], p) > 0)
-			r -= membsize;
+		while (l.index < r.index && cmp(l.ptr, p) < 0)
+			advance(&l, 1);
+		while (r.index >= l.index && cmp(r.ptr, p) > 0)
+			advance(&r, -1);
 		
-		if (l >= r)
+		if (l.index >= r.index)
 			break;
 
-		memcpy(tmp, &arr[r], membsize);
-		memcpy(&arr[r], &arr[l], membsize);
-		memcpy(&arr[l], tmp, membsize);
+		memcpy(tmp, r.ptr, size);
+		memcpy(r.ptr, l.ptr, size);
+		memcpy(l.ptr, tmp, size);
 
-		r -= membsize;
-		l += membsize;
+		advance(&r, -1);
+		advance(&l, 1);
 	}
 
-	memcpy(tmp, &arr[r], membsize);
-	memcpy(&arr[r], p, membsize);
-	memcpy(p, tmp, membsize);
+	memcpy(tmp, r.ptr, size);
+	memcpy(r.ptr, p, size);
+	memcpy(p, tmp, size);
 	return r;
 }
 
 
-static inline void quick_sort_rec(char* const arr,
-                                  const int beg,
-				  const int end,
-				  const int membsize,
-				  int(*cmp)(const void*, const void*))
-{
-	if ((end - beg) > 0) {
-		const int split = quick_sort_part(arr, beg, end, membsize, cmp);
-		quick_sort_rec(arr, beg, split - membsize, membsize, cmp);
-		quick_sort_rec(arr, split + membsize, end, membsize, cmp);
-	}
-}
-
-
-static inline void quick_sort(void* const arr,
-                              const int nmemb,
+static inline void quick_sort(const Iterator begin,
+                              const Iterator end,
 			      const int size,
-			      int(*cmp)(const void*, const void*))
+			      const CmpFun cmp,
+			      const AdvanceFun advance)
 {
-	if (nmemb > 1)
-		quick_sort_rec(arr, 0, (nmemb * size) - size, size, cmp);
+	if ((end.index - begin.index) > 1) {
+		Iterator split = quick_sort_part(begin, end, size, cmp, advance);
+		quick_sort(begin, split, size, cmp, advance);
+		advance(&split, 1);
+		quick_sort(split, end, size, cmp, advance);
+	}
 }
 
 

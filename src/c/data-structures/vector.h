@@ -145,16 +145,17 @@ static inline Iterator vector_end(Vector* const v)
 
 static inline void vector_cadvance(ConstIterator* const it, const int n)
 {
-	assert(n != 0);
-
 	const Vector* const v = it->ds;
 	it->ptr = ((char*)it->ptr) + v->membsize * n;
 
-	if (((char*)it->ptr) > &((char*)v->data)[v->bidx]) {
-		it->ptr = &((char*)v->data)[v->bidx];
+	if (((char*)it->ptr) > ((char*)v->data) + v->bidx) {
+		it->ptr = ((char*)v->data) + v->bidx;
 		it->index = v->bidx / v->membsize;
+	} else if (((char*)it->ptr) < ((char*)v->data)) {
+		it->ptr = v->data;
+		it->index = 0;
 	} else {
-		it->index += n > 0 ? 1 : -1;
+		it->index += n;
 	}
 }
 

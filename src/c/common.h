@@ -2,9 +2,9 @@
 #define CS_COMMON_H_
 #include <stdlib.h>
 #include "data-structures/ds-generics.h"
-#include "utils.h"
 #include "algorithms/searching/binary-search.h"
 #include "algorithms/sorting/quick-sort.h"
+#include "utils.h"
 
 
 static inline Vector* create_int_vector_from_strings(const char* const* const strs, const int size)
@@ -22,7 +22,7 @@ static inline Vector* create_int_vector_from_strings(const char* const* const st
 
 static inline int cmp_int(const void* a, const void* b)
 {
-	return *((int*)a) - *((int*)b);
+	return *((const int*)a) - *((const int*)b);
 }
 
 
@@ -53,7 +53,7 @@ static inline int sort_test(const int argc,
 	print_int_data(cbegin(vec), cend(vec), vector_cadvance);
 #endif
 
-	sortfun((int*)vec->data, size, sizeof(int), cmp_int);
+	sortfun(begin(vec), end(vec), sizeof(int), cmp_int, vector_advance);
 	
 #ifdef CSDEBUG
 	printf("SORTED:\n");
@@ -80,23 +80,19 @@ static inline int search_test(const int argc,
 	Vector* const vec = create_int_vector_from_strings(argv + 1, size);
 
 	if (searchfun == &binary_search)
-		quick_sort((int*)vec->data, size, sizeof(int), cmp_int);
-
-
-	const int* const found = searchfun(cbegin(vec), cend(vec), &target, cmp_int, vector_cadvance);
-
+		quick_sort(begin(vec), end(vec), sizeof(int), cmp_int, vector_advance);
 
 #ifdef CSDEBUG
 	printf("ARRAY:\n");
 	print_int_data(cbegin(vec), cend(vec), vector_cadvance);
 #endif
 
-	if (found != NULL) {
-		const int index = (int) (found - ((int*)vec->data));
-		printf("%d FOUND AT INDEX %d\n", target, index);
-	} else {
+	const ConstIterator found = searchfun(cbegin(vec), cend(vec), &target, cmp_int, vector_cadvance);
+
+	if (found.ptr != cend(vec).ptr)
+		printf("%d FOUND AT INDEX %d\n", *((const int*)found.ptr), found.index);
+	else
 		printf("%d NOT FOUND\n", target);
-	}
 
 	destroy_vector(vec);
 	return EXIT_SUCCESS;

@@ -4,16 +4,16 @@
 #include "utils.h"
 
 
-static inline const void* linear_search(const ConstIterator begin,
-                                        const ConstIterator end,
-				        const void* const target,
-				        const CmpFun cmp,
-					const ConstAdvanceFun advance)
+static inline ConstIterator linear_search(const ConstIterator begin,
+                                          const ConstIterator end,
+				          const void* const target,
+				          const CmpFun cmp,
+					  const ConstAdvanceFun advance)
 {
 	for (ConstIterator it = begin; it.ptr != end.ptr; advance(&it, 1))
 		if (cmp(target, it.ptr) == 0)
-			return it.ptr;
-	return NULL;
+			return it;
+	return end;
 }
 
 

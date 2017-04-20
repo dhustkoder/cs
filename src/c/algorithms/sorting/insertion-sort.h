@@ -1,22 +1,28 @@
 #ifndef CS_ALGORITHMS_INSERTION_SORT_H_
 #define CS_ALGORITHMS_INSERTION_SORT_H_
 #include <string.h>
+#include "utils.h"
 
 
-static inline void insertion_sort(void* const array, const int nmemb, const int size, int(*cmp)(const void*, const void*))
+static inline void insertion_sort(const Iterator begin,
+                                  const Iterator end,
+				  const int size,
+				  const CmpFun cmp,
+				  const AdvanceFun advance)
 {
-	if (nmemb < 2)
-		return;
+	unsigned char tmp[size];
 
-	char tmp[size];
-	const int bytes = nmemb * size;
-	char* const a = (char*) array;
+	for (Iterator it = begin; it.ptr != end.ptr; advance(&it, 1)) {
+		for (Iterator j = it; j.ptr != begin.ptr; advance(&j, -1)) {
+			Iterator jprev = j;
+			advance(&jprev, -1);
 
-	for (int i = size; i < bytes; i += size) {
-		for (int j = i; j > 0 && cmp(&a[j], &a[j - size]) < 0; j -= size) {
-			memcpy(tmp, &a[j], size);
-			memcpy(&a[j], &a[j - size], size);
-			memcpy(&a[j - size], tmp, size);
+			if (cmp(j.ptr, jprev.ptr) >= 0)
+				break;
+
+			memcpy(tmp, j.ptr, size);
+			memcpy(j.ptr, jprev.ptr, size);
+			memcpy(jprev.ptr, tmp, size);
 		}
 	}
 }
