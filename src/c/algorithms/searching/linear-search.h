@@ -8,13 +8,11 @@ static inline const void* linear_search(const ConstIterator begin,
                                         const ConstIterator end,
 				        const void* const target,
 				        const CmpFun cmp,
-					const ConstNextFun next,
-					const ConstPrevFun prev)
+					const ConstAdvanceFun advance)
 {
-	UNUSED(prev);
-	for (ConstIterator it = begin; it.elem != end.elem; next(&it, 1))
-		if (cmp(target, it.elem) == 0)
-			return it.elem;
+	for (ConstIterator it = begin; it.ptr != end.ptr; advance(&it, 1))
+		if (cmp(target, it.ptr) == 0)
+			return it.ptr;
 	return NULL;
 }
 

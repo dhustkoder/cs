@@ -26,13 +26,13 @@ static inline int cmp_int(const void* a, const void* b)
 }
 
 
-static inline void print_int_data(const Iterator begin,
-                                  const Iterator end,
-				  void(*const next)(Iterator*, const int))
+static inline void print_int_data(const ConstIterator begin,
+                                  const ConstIterator end,
+				  const ConstAdvanceFun advance)
 {
 	int i = 0;
-	for (Iterator it = begin; it.elem != end.elem; next(&it, 1))
-		printf("[%d] = %d\n", i++, *((int*)it.elem));
+	for (ConstIterator it = begin; it.ptr != end.ptr; advance(&it, 1))
+		printf("[%d] = %d\n", i++, *((const int*)it.ptr));
 }
 
 
@@ -50,14 +50,14 @@ static inline int sort_test(const int argc,
 
 #ifdef CSDEBUG
 	printf("UNSORTED:\n");
-	print_int_data(begin(vec), end(vec), vector_next);
+	print_int_data(cbegin(vec), cend(vec), vector_cadvance);
 #endif
 
 	sortfun((int*)vec->data, size, sizeof(int), cmp_int);
 	
 #ifdef CSDEBUG
 	printf("SORTED:\n");
-	print_int_data(begin(vec), end(vec), vector_next);
+	print_int_data(cbegin(vec), cend(vec), vector_cadvance);
 #endif
 	// escape memory to avoid optimization in release mode
 	printf("%d\n", ((int*)vec->data)[size - 1]);
@@ -82,11 +82,13 @@ static inline int search_test(const int argc,
 	if (searchfun == &binary_search)
 		quick_sort((int*)vec->data, size, sizeof(int), cmp_int);
 
-	const int* const found = searchfun(cbegin(vec), cend(vec), &target, cmp_int, vector_cnext, vector_cprev);
+
+	const int* const found = searchfun(cbegin(vec), cend(vec), &target, cmp_int, vector_cadvance);
+
 
 #ifdef CSDEBUG
 	printf("ARRAY:\n");
-	print_int_data(begin(vec), end(vec), vector_next);
+	print_int_data(cbegin(vec), cend(vec), vector_cadvance);
 #endif
 
 	if (found != NULL) {

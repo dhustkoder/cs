@@ -2,6 +2,7 @@
 #define CS_DATA_STRUCTURES_VECTOR_H_
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 #include <limits.h>
 #include <string.h>
 #include <stdbool.h>
@@ -129,7 +130,7 @@ static inline ConstIterator vector_cend(const Vector* const v)
 static inline Iterator vector_begin(Vector* const v)
 {
 	ConstIterator cit = vector_cbegin(v);
-	Iterator it = {cit.ds, (void*)cit.elem, cit.index};
+	Iterator it = {cit.ds, (void*)cit.ptr, cit.index};
 	return it;
 }
 
@@ -137,50 +138,34 @@ static inline Iterator vector_begin(Vector* const v)
 static inline Iterator vector_end(Vector* const v)
 {
 	ConstIterator cit = vector_cend(v);
-	Iterator it = {cit.ds, (void*)cit.elem, cit.index};
+	Iterator it = {cit.ds, (void*)cit.ptr, cit.index};
 	return it;
 }
 
 
-static inline void vector_cnext(ConstIterator* const it, const int n)
+static inline void vector_cadvance(ConstIterator* const it, const int n)
 {
-	const Vector* const v = it->ds;
-	it->elem = ((char*)it->elem) + v->membsize * n;
+	assert(n != 0);
 
-	if (((char*)it->elem) > &((char*)v->data)[v->bidx]) {
-		it->elem = &((char*)v->data)[v->bidx];
+	const Vector* const v = it->ds;
+	it->ptr = ((char*)it->ptr) + v->membsize * n;
+
+	if (((char*)it->ptr) > &((char*)v->data)[v->bidx]) {
+		it->ptr = &((char*)v->data)[v->bidx];
 		it->index = v->bidx / v->membsize;
 	} else {
-		++it->index;
+		it->index += n > 0 ? 1 : -1;
 	}
 }
 
 
-static inline void vector_cprev(ConstIterator* const it, const int n)
+static inline void vector_advance(Iterator* const it, const int n)
 {
-	const Vector* const v = it->ds;
-	it->elem = ((char*)it->elem) - v->membsize * n;
-	--it->index;
-}
-
-
-static inline void vector_next(Iterator* const it, const int n)
-{
-	ConstIterator cit = {it->ds, it->elem, it->index};
-	vector_cnext(&cit, n);
-	it->elem = (void*) cit.elem;
+	ConstIterator cit = {it->ds, it->ptr, it->index};
+	vector_cadvance(&cit, n);
+	it->ptr = (void*) cit.ptr;
 	it->index = cit.index;
 }
-
-
-static inline void vector_prev(Iterator* const it, const int n)
-{
-	ConstIterator cit = {it->ds, it->elem, it->index};
-	vector_cprev(&cit, n);
-	it->elem = (void*) cit.elem;
-	it->index = cit.index;
-}
-
 
 
 
