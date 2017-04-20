@@ -38,9 +38,9 @@ public:
 	Vector& operator=(Vector&& rhs)
 	{
 		if (&rhs != this) {
-			m_data = rhs.m_data;
-			m_size = rhs.m_size;
-			m_cap = rhs.m_cap;
+			std::swap(m_data, rhs.m_data);
+			std::swap(m_size, rhs.m_size);
+			std::swap(m_cap, rhs.m_cap);
 		}
 
 		return *this;
