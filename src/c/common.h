@@ -2,14 +2,9 @@
 #define CS_COMMON_H_
 #include <stdlib.h>
 #include "data-structures/ds-generics.h"
-
-
-typedef int(*CmpFun)(const void*, const void*);
-typedef void(*NextFun)(Iterator*, int);
-typedef void(*PrevFun)(Iterator*, int);
-typedef const void*(*ConstSearchFun)(const void*, int, int, const void*, CmpFun);
-typedef const void*(*SearchFun)(Iterator, Iterator, const void*, CmpFun, NextFun, PrevFun);
-typedef void(*SortFun)(void*, int, int, CmpFun);
+#include "utils.h"
+#include "algorithms/searching/binary-search.h"
+#include "algorithms/sorting/quick-sort.h"
 
 
 static inline Vector* create_int_vector_from_strings(const char* const* const strs, const int size)
@@ -71,9 +66,9 @@ static inline int sort_test(const int argc,
 }
 
 
-static inline int search_test_impl(const int argc,
-                                   const char* const * argv,
-                                   const SearchFun searchfun)
+static inline int search_test(const int argc,
+                              const char* const * argv,
+                              const SearchFun searchfun)
 {
 	if (argc < 4) {
 		fprintf(stderr, "Usage: %s [list] [target]\n", argv[0]);
@@ -84,7 +79,10 @@ static inline int search_test_impl(const int argc,
 	const int target = strtol(argv[argc - 1], NULL, 0);
 	Vector* const vec = create_int_vector_from_strings(argv + 1, size);
 
-	const int* const found = searchfun(begin(vec), end(vec), &target, cmp_int, vector_next, vector_prev);
+	if (searchfun == &binary_search)
+		quick_sort((int*)vec->data, size, sizeof(int), cmp_int);
+
+	const int* const found = searchfun(cbegin(vec), cend(vec), &target, cmp_int, vector_cnext, vector_cprev);
 
 #ifdef CSDEBUG
 	printf("ARRAY:\n");
@@ -101,12 +99,6 @@ static inline int search_test_impl(const int argc,
 	destroy_vector(vec);
 	return EXIT_SUCCESS;
 }
-
-
-#define search_test(argc, argv, searchfun)                            \
-	_Generic((searchfun),                                         \
-	ConstSearchFun: search_test_impl,                             \
-	SearchFun: search_test_impl)(argc, argv, (SearchFun)searchfun)
 
 
 

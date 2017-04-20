@@ -112,23 +112,39 @@ static inline void vector_pop_back(Vector* const v)
 }
 
 
+static inline ConstIterator vector_cbegin(const Vector* const v)
+{
+	ConstIterator it = {v, v->data, 0};
+	return it;
+}
+
+
+static inline ConstIterator vector_cend(const Vector* const v)
+{
+	ConstIterator it = {v, ((char*)v->data) + v->bidx, v->bidx / v->membsize};
+	return it;
+}
+
+
 static inline Iterator vector_begin(Vector* const v)
 {
-	Iterator it = {v, v->data, 0};
+	ConstIterator cit = vector_cbegin(v);
+	Iterator it = {cit.ds, (void*)cit.elem, cit.index};
 	return it;
 }
 
 
 static inline Iterator vector_end(Vector* const v)
 {
-	Iterator it = {v, ((char*)v->data) + v->bidx, v->bidx / v->membsize};
+	ConstIterator cit = vector_cend(v);
+	Iterator it = {cit.ds, (void*)cit.elem, cit.index};
 	return it;
 }
 
 
-static inline void vector_next(Iterator* const it, const int n)
+static inline void vector_cnext(ConstIterator* const it, const int n)
 {
-	Vector* const v = it->ds;
+	const Vector* const v = it->ds;
 	it->elem = ((char*)it->elem) + v->membsize * n;
 
 	if (((char*)it->elem) > &((char*)v->data)[v->bidx]) {
@@ -140,11 +156,29 @@ static inline void vector_next(Iterator* const it, const int n)
 }
 
 
-static inline void vector_prev(Iterator* const it, const int n)
+static inline void vector_cprev(ConstIterator* const it, const int n)
 {
-	Vector* const v = it->ds;
+	const Vector* const v = it->ds;
 	it->elem = ((char*)it->elem) - v->membsize * n;
 	--it->index;
+}
+
+
+static inline void vector_next(Iterator* const it, const int n)
+{
+	ConstIterator cit = {it->ds, it->elem, it->index};
+	vector_cnext(&cit, n);
+	it->elem = (void*) cit.elem;
+	it->index = cit.index;
+}
+
+
+static inline void vector_prev(Iterator* const it, const int n)
+{
+	ConstIterator cit = {it->ds, it->elem, it->index};
+	vector_cprev(&cit, n);
+	it->elem = (void*) cit.elem;
+	it->index = cit.index;
 }
 
 

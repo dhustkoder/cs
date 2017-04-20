@@ -1,13 +1,13 @@
 #ifndef CS_ALGORITHMS_BINARY_SEARCH_H_
 #define CS_ALGORITHMS_BINARY_SEARCH_H_
-#include "unused.h"
+#include "utils.h"
 
-static inline const void* binary_search(const Iterator begin,
-                                        const Iterator end,
+static inline const void* binary_search(const ConstIterator begin,
+                                        const ConstIterator end,
 					const void* const target,
-					int(*cmp)(const void*, const void*),
-					void(*const next)(Iterator*, int),
-					void(*const prev)(Iterator*, int))
+					const CmpFun cmp,
+					const ConstNextFun next,
+					const ConstPrevFun prev)
 {
 	UNUSED(prev);
 	int min = 0;
@@ -15,7 +15,7 @@ static inline const void* binary_search(const Iterator begin,
 
 	while (min <= max) {
 		const int guess = (min + max) / 2;
-		Iterator it = begin;
+		ConstIterator it = begin;
 		next(&it, guess);
 		const int result = cmp(it.elem, target);
 		if (result < 0)

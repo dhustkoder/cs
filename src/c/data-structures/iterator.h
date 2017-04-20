@@ -3,17 +3,17 @@
 
 
 typedef struct Iterator {
-	void* const ds;
+	const void* const ds;
 	void* elem;
 	int index;
 } Iterator;
 
 
-
-
-
-
-
+typedef struct ConstIterator {
+	const void* const ds;
+	const void* elem;
+	int index;
+} ConstIterator;
 
 
 #endif
