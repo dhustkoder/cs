@@ -47,13 +47,13 @@ public:
 	}
 
 
-	const T& operator[](int idx) const
+	const T& operator[](const int idx) const
 	{
 		return m_data[idx];
 	}
 
 
-	T& operator[](int idx)
+	T& operator[](const int idx)
 	{
 		return const_cast<T&>(static_cast<const Vector<T>&>(*this)[idx]);
 	}
@@ -63,6 +63,7 @@ public:
 	{
 		return m_size;
 	}
+
 
 	int capacity() const
 	{
@@ -75,6 +76,7 @@ public:
 		return m_data;
 	}
 
+
 	const T* end() const
 	{
 		return m_data + size();
@@ -86,13 +88,14 @@ public:
 		return const_cast<T*>(static_cast<const Vector<T>&>(*this).begin());
 	}
 
+
 	T* end()
 	{
 		return const_cast<T*>(static_cast<const Vector<T>&>(*this).end());
 	}
 
 
-	void resize(unsigned long long need)
+	void resize(const unsigned long long need)
 	{
 		if (need >= std::numeric_limits<int>::max())
 			throw std::runtime_error("Can't resize vector");
@@ -121,7 +124,7 @@ public:
 	}
 
 	
-	void reserve(unsigned long long need)
+	void reserve(const unsigned long long need)
 	{
 		if (need > static_cast<unsigned long long>(capacity()))
 			resize(need + (size() / 2));
@@ -148,7 +151,7 @@ public:
 
 
 private:
-	void ensure_capacity(unsigned long long need)
+	void ensure_capacity(const unsigned long long need)
 	{
 		if (need > static_cast<unsigned long long>(capacity()))
 			reserve(need + (need / 2));

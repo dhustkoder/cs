@@ -1,24 +1,30 @@
 #ifndef CS_ALGORITHMS_INSERTION_SORT_HPP_
 #define CS_ALGORITHMS_INSERTION_SORT_HPP_
 #include <utility>
+#include <iterator>
 
 
-template<class T, class Fn>
-void insertion_sort(const T begin, const T end, Fn compare)
+template<class Itr, class Fn>
+void insertion_sort(const Itr begin, const Itr end, Fn compare)
 {
-	for (T i = begin; i < end; ++i) {
-		for (T j = i; j > begin; --j) {
+
+	for (auto i = begin; i != end; i = std::next(i)) {
+
+		for (auto j = i; j != begin; j = std::prev(j)) {
+			auto jprev = std::prev(j);
 			const auto& f = *j;
-			const auto& s = *(j - 1);
+			const auto& s = *jprev;
 
 			if (!compare(f, s))
 				break;
 
 			auto aux = std::move(*j);
-			*j = std::move(*(j - 1));
-			*(j - 1) = std::move(aux);
+			*j = std::move(*jprev);
+			*jprev = std::move(aux);
 		}
+
 	}
+
 }
 
 

@@ -3,7 +3,7 @@
 #include <string.h>
 
 
-static void insertion_sort(void* const array, const int nmemb, const int size, int(*cmp)(const void*, const void*))
+static inline void insertion_sort(void* const array, const int nmemb, const int size, int(*cmp)(const void*, const void*))
 {
 	if (nmemb < 2)
 		return;

@@ -1,14 +1,15 @@
 #ifndef CS_ALGORITHMS_QUICK_SORT_HPP_
 #define CS_ALGORITHMS_QUICK_SORT_HPP_
 #include <utility>
+#include <iterator>
 
 
-template<class T, class Fn>
-T quick_sort_part(const T begin, const T end, Fn compare)
+template<class Itr, class Fn>
+Itr quick_sort_part(const Itr begin, const Itr end, Fn compare)
 {
-	const T p = begin;
-	T l = begin + 1;
-	T r = end - 1;
+	const auto p = begin;
+	auto l = std::next(begin);
+	auto r = std::prev(end);
 	const auto& pval = *p;
 
 	for (;;) {
@@ -16,15 +17,14 @@ T quick_sort_part(const T begin, const T end, Fn compare)
 			const auto& lval = *l;
 			if (!compare(lval, pval))
 				break;
-
-			++l;
+			l = std::next(l);
 		}
 
 		while (r >= l) {
 			const auto& rval = *r;
 			if (!compare(pval, rval))
 				break;
-			--r;
+			r = std::prev(r);
 		}
 
 		if (l >= r)
@@ -34,8 +34,8 @@ T quick_sort_part(const T begin, const T end, Fn compare)
 		*r = std::move(*l);
 		*l = std::move(aux);
 
-		++l;
-		--r;
+		l = std::next(l);
+		r = std::prev(r);
 	}
 
 	auto aux = std::move(*r);
@@ -45,13 +45,13 @@ T quick_sort_part(const T begin, const T end, Fn compare)
 }
 
 
-template<class T, class Fn>
-void quick_sort(const T begin, const T end, Fn compare)
+template<class Itr, class Fn>
+void quick_sort(const Itr begin, const Itr end, Fn compare)
 {
 	if ((end - begin) > 1) {
-		const T part = quick_sort_part(begin, end, compare);
+		const auto part = quick_sort_part(begin, end, compare);
 		quick_sort(begin, part, compare);
-		quick_sort(part + 1, end, compare);
+		quick_sort(std::next(part), end, compare);
 	}
 }
 
