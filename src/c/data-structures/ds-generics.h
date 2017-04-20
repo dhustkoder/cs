@@ -4,13 +4,31 @@
 
 
 
-#define push_back_array(data, size, dest)                 \
-        _Generic((dest),                                  \
-	Vector*: vector_push_back_array)(data, size, dest)
+#define push_back_array(data, size, ds)                 \
+        _Generic((ds),                                  \
+	Vector*: vector_push_back_array)(data, size, ds)
 
-#define push_back(data, dest)                             \
-        _Generic((dest),                                  \
-        Vector*: vector_push_back)(data, dest)
+
+#define push_back(data, ds)                             \
+        _Generic((ds),                                  \
+        Vector*: vector_push_back)(data, ds)
+
+
+#define pop_back(ds)                                    \
+        _Generic((ds),                                  \
+        Vector*: vector_pop_back)(ds)
+
+
+#define begin(ds)                                       \
+        _Generic((ds),                                  \
+        Vector*: vector_begin)(ds)
+
+
+#define end(ds)                                         \
+        _Generic((ds),                                  \
+        Vector*: vector_end)(ds)
+
 
 
 #endif
+

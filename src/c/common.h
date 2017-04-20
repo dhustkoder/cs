@@ -3,12 +3,12 @@
 #include <stdlib.h>
 #include "data-structures/ds-generics.h"
 
-#define UNUSED(x) ((void)x)
-
 
 typedef int(*CmpFun)(const void*, const void*);
+typedef void(*NextFun)(Iterator*, int);
+typedef void(*PrevFun)(Iterator*, int);
 typedef const void*(*ConstSearchFun)(const void*, int, int, const void*, CmpFun);
-typedef const void*(*SearchFun)(void*, int, int, const void*, CmpFun);
+typedef const void*(*SearchFun)(Iterator, Iterator, const void*, CmpFun, NextFun, PrevFun);
 typedef void(*SortFun)(void*, int, int, CmpFun);
 
 
@@ -31,27 +31,14 @@ static inline int cmp_int(const void* a, const void* b)
 }
 
 
-static inline void print_int_array(const int* const a, const int size)
+static inline void print_int_data(const Iterator begin,
+                                  const Iterator end,
+				  void(*const next)(Iterator*, const int))
 {
-	for (int i = 0; i < size; ++i)
-		printf("[%d] = %d\n", i, a[i]);
+	int i = 0;
+	for (Iterator it = begin; it.elem != end.elem; next(&it, 1))
+		printf("[%d] = %d\n", i++, *((int*)it.elem));
 }
-
-static inline void print_str_array(const char* const * a, const int size)
-{
-	for (int i = 0; i < size; ++i)
-		printf("[%d] = %s\n", i, a[i]);
-}
-
-
-#define print_array(array, size)                         \
-        _Generic((array),                                \
-        const int*: print_int_array,                     \
-        int*: print_int_array,                           \
-        const char**: print_str_array,                   \
-        char**: print_str_array)(array, size)
-
-
 
 
 static inline int sort_test(const int argc,
@@ -68,14 +55,14 @@ static inline int sort_test(const int argc,
 
 #ifdef CSDEBUG
 	printf("UNSORTED:\n");
-	print_array((int*)vec->data, size);
+	print_int_data(begin(vec), end(vec), vector_next);
 #endif
 
 	sortfun((int*)vec->data, size, sizeof(int), cmp_int);
 	
 #ifdef CSDEBUG
 	printf("SORTED:\n");
-	print_array((int*)vec->data, size);
+	print_int_data(begin(vec), end(vec), vector_next);
 #endif
 	// escape memory to avoid optimization in release mode
 	printf("%d\n", ((int*)vec->data)[size - 1]);
@@ -97,11 +84,11 @@ static inline int search_test_impl(const int argc,
 	const int target = strtol(argv[argc - 1], NULL, 0);
 	Vector* const vec = create_int_vector_from_strings(argv + 1, size);
 
-	const int* const found = searchfun((int*)vec->data, size, sizeof(int), &target, cmp_int);
+	const int* const found = searchfun(begin(vec), end(vec), &target, cmp_int, vector_next, vector_prev);
 
 #ifdef CSDEBUG
 	printf("ARRAY:\n");
-	print_array((int*)vec->data, size);
+	print_int_data(begin(vec), end(vec), vector_next);
 #endif
 
 	if (found != NULL) {

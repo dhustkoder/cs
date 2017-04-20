@@ -5,6 +5,7 @@
 #include <limits.h>
 #include <string.h>
 #include <stdbool.h>
+#include "iterator.h"
 
 
 typedef struct Vector {
@@ -109,6 +110,44 @@ static inline void vector_pop_back(Vector* const v)
 	if (v->bidx > 0)
 		v->bidx -= v->membsize;
 }
+
+
+static inline Iterator vector_begin(Vector* const v)
+{
+	Iterator it = {v, v->data, 0};
+	return it;
+}
+
+
+static inline Iterator vector_end(Vector* const v)
+{
+	Iterator it = {v, ((char*)v->data) + v->bidx, v->bidx / v->membsize};
+	return it;
+}
+
+
+static inline void vector_next(Iterator* const it, const int n)
+{
+	Vector* const v = it->ds;
+	it->elem = ((char*)it->elem) + v->membsize * n;
+
+	if (((char*)it->elem) > &((char*)v->data)[v->bidx]) {
+		it->elem = &((char*)v->data)[v->bidx];
+		it->index = v->bidx / v->membsize;
+	} else {
+		++it->index;
+	}
+}
+
+
+static inline void vector_prev(Iterator* const it, const int n)
+{
+	Vector* const v = it->ds;
+	it->elem = ((char*)it->elem) - v->membsize * n;
+	--it->index;
+}
+
+
 
 
 #endif
