@@ -10,15 +10,17 @@ static inline void insertion_sort(const Iterator begin,
 				  const CmpFun cmp,
 				  const AdvanceFun advance)
 {
-	for (Iterator it = begin; it.ptr != end.ptr; advance(&it, 1)) {
-		for (Iterator j = it; j.ptr != begin.ptr; advance(&j, -1)) {
-			Iterator jprev = j;
-			advance(&jprev, -1);
+	for (int i = begin.index; i < end.index; ++i) {
+		for (int j = i; j > begin.index; --j) {
+			Iterator it1 = end;
+			advance(&it1, -j);
+			Iterator it2 = it1;
+			advance(&it2, -1);
 
-			if (cmp(j.ptr, jprev.ptr) >= 0)
+			if (cmp(it1.ptr, it2.ptr) >= 0)
 				break;
 
-			swap(jprev.ptr, j.ptr);
+			swap(it1.ptr, it2.ptr);
 		}
 	}
 }

@@ -7,6 +7,7 @@ import src.java.data_structures.*;
 
 public class Tests 
 {
+	static final boolean CSDEBUG = false;
 
 	public static void sort(final String[] args, final SortingAlgorithm sortAlgo)
 	{
@@ -17,13 +18,17 @@ public class Tests
 			System.exit(-1);
 		}
 
-		System.out.println("UNSORTED:");
-		Utils.printData(array);
+		if (CSDEBUG) {
+			System.out.println("UNSORTED:");
+			Utils.printData(array);
+		}
 
 		sortAlgo.execute(array);
 
-		System.out.println("SORTED:");
-		Utils.printData(array);
+		if (CSDEBUG) {
+			System.out.println("SORTED:");
+			Utils.printData(array);
+		}
 	}
 
 
@@ -44,8 +49,10 @@ public class Tests
 		}
 
 
-		System.out.println("ARRAY:");
-		Utils.printData(array);
+		if (CSDEBUG) {
+			System.out.println("ARRAY:");
+			Utils.printData(array);
+		}
 
 		final Integer index = searchAlgo.execute(array, target);
 

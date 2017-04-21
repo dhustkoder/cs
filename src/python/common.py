@@ -4,7 +4,7 @@ import logging
 import sys
 import os
 
-logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+logging.basicConfig(stream=sys.stdout, level=logging.ERROR)
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)) + "/data-structures/")
 
