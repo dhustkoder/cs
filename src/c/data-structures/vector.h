@@ -10,7 +10,7 @@
 
 
 typedef struct Vector {
-	void* data;
+	unsigned char* data;
 	int bytes;
 	int membsize;
 	int bidx;
@@ -28,22 +28,25 @@ static inline Vector* create_vector(const int nmemb, const int size)
 
 	Vector* const v = malloc(sizeof(Vector));
 
-	if (v == NULL) {
-		fprintf(stderr, "Couldn't allocate memory");
-		return NULL;
-	}
+	if (v == NULL)
+		goto vec_fail;
 
 	v->data = malloc(bytes);
 
-	if (v->data == NULL) {
-		fprintf(stderr, "Couldn't allocate memory");
-		return NULL;
-	}
+	if (v->data == NULL)
+		goto data_fail;
 
 	v->membsize = size;
 	v->bytes = bytes;
 	v->bidx = 0;
 	return v;
+
+
+data_fail:
+	free(v);
+vec_fail:
+	fprintf(stderr, "Couldn't allocate memory\n");
+	return NULL;
 }
 
 
@@ -89,8 +92,7 @@ static inline void vector_push_back(const void* const data, Vector* const v)
 	if (!vector_ensure_capacity(v->bidx + v->membsize, v))
 		return;
 
-	char* const p = (char*) v->data;
-	memcpy(&p[v->bidx], data, v->membsize);
+	memcpy(v->data + v->bidx, data, v->membsize);
 	v->bidx += v->membsize;
 }
 
@@ -100,8 +102,7 @@ static inline void vector_push_back_array(const void* const data, const int size
 	if (!vector_ensure_capacity(v->bidx + size * v->membsize, v))
 		return;
 
-	char* const p = (char*) v->data;
-	memcpy(&p[v->bidx], data, v->membsize * size);
+	memcpy(v->data + v->bidx, data, v->membsize * size);
 	v->bidx += v->membsize * size;
 }
 
@@ -122,7 +123,7 @@ static inline ConstIterator vector_cbegin(const Vector* const v)
 
 static inline ConstIterator vector_cend(const Vector* const v)
 {
-	ConstIterator it = {v, ((char*)v->data) + v->bidx, v->bidx / v->membsize};
+	ConstIterator it = {v, v->data + v->bidx, v->bidx / v->membsize};
 	return it;
 }
 
@@ -146,12 +147,12 @@ static inline Iterator vector_end(Vector* const v)
 static inline void vector_cadvance(ConstIterator* const it, const int n)
 {
 	const Vector* const v = it->ds;
-	it->ptr = ((char*)it->ptr) + v->membsize * n;
+	it->ptr = it->ptr + v->membsize * n;
 
-	if (((char*)it->ptr) > ((char*)v->data) + v->bidx) {
-		it->ptr = ((char*)v->data) + v->bidx;
+	if (it->ptr > (v->data + v->bidx)) {
+		it->ptr += v->bidx;
 		it->index = v->bidx / v->membsize;
-	} else if (((char*)it->ptr) < ((char*)v->data)) {
+	} else if (it->ptr < v->data) {
 		it->ptr = v->data;
 		it->index = 0;
 	} else {

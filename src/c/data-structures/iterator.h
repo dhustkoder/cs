@@ -4,14 +4,14 @@
 
 typedef struct Iterator {
 	const void* const ds;
-	void* ptr;
+	unsigned char* ptr;
 	int index;
 } Iterator;
 
 
 typedef struct ConstIterator {
 	const void* const ds;
-	const void* ptr;
+	const unsigned char* ptr;
 	int index;
 } ConstIterator;
 
