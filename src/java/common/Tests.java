@@ -42,13 +42,6 @@ public class Tests
 			System.exit(-1);
 		}
 
-
-		if (searchAlgo instanceof BinarySearch) {
-			QuickSort qsort = new QuickSort();
-			qsort.execute(array);
-		}
-
-
 		if (CSDEBUG) {
 			System.out.println("ARRAY:");
 			Utils.printData(array);

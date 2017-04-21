@@ -28,7 +28,7 @@ static inline int cmp_int(const void* const a, const void* const b)
 
 static inline void swap_int(void* const a, void* const b)
 {
-	int tmp = *((int*)a);
+	const int tmp = *((int*)a);
 	*((int*)a) = *((int*)b);
 	*((int*)b) = tmp;
 }
@@ -73,7 +73,7 @@ static inline int sort_test(const int argc,
 
 
 static inline int search_test(const int argc,
-                              const char* const * argv,
+                              const char* const * const argv,
                               const SearchFun searchfun)
 {
 	if (argc < 4) {
@@ -84,9 +84,6 @@ static inline int search_test(const int argc,
 	const int size = argc - 2;
 	const int target = strtol(argv[argc - 1], NULL, 0);
 	Vector* const vec = create_int_vector_from_strings(argv + 1, size);
-
-	if (searchfun == &binary_search)
-		quick_sort(begin(vec), end(vec), swap_int, cmp_int, vector_advance);
 
 #ifdef CSDEBUG
 	printf("ARRAY:\n");

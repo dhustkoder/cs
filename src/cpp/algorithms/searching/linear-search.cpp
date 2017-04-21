@@ -7,7 +7,8 @@
 
 struct SearchFun {
 	template<class Itr, class T>
-	Itr operator()(const Itr begin, const Itr end, const T& target) {
+	Itr operator()(const Itr begin, const Itr end, const T& target) &&
+	{
 		return linear_search(begin, end, target);
 	}
 };

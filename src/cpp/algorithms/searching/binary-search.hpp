@@ -2,6 +2,7 @@
 #define CS_ALGORITHMS_BINARY_SEARCH_HPP_
 #include <iterator>
 
+
 template<class Itr, class T>
 Itr binary_search(const Itr begin, const Itr end, const T& target)
 {

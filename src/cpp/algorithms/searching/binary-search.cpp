@@ -8,8 +8,8 @@
 
 struct SearchFun {
 	template<class Itr, class T>
-	Itr operator()(const Itr begin, const Itr end, const T& target) {
-		quick_sort(begin, end, [](int a, int b) { return a < b; });
+	Itr operator()(const Itr begin, const Itr end, const T& target) &&
+	{
 		return binary_search(begin, end, target);
 	}
 };

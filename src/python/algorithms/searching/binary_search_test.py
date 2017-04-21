@@ -11,11 +11,7 @@ from quick_sort import *
 from common import *
 
 
-def binarySortPrep(data, target):
-    quickSort(data, lambda a, b: (a < b))
-    return binarySearch(data, target)
-
-sys.exit(searchTest(binarySortPrep))
+sys.exit(searchTest(binarySearch))
 
 
 

@@ -66,11 +66,6 @@ namespace Common
 			int target = data[data.Count - 1];
 			data.RemoveAt(data.Count - 1);
 
-			if (search is BinarySearch) {
-				var qsort = new QuickSort();
-				qsort.Execute(data);
-			}
-
 			#if CSDEBUG
 			Console.WriteLine("ARRAY:");
 			Utils.PrintData(data);
