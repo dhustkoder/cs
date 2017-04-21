@@ -47,8 +47,7 @@ int sort_test(const int argc, const char* const * argv)
 	std::cout << "SORTED:\n";
 	print_data(v);
 #endif
-	// escape memory to avoid optimization in release mode
-	std::cout << v.back() << '\n';
+
 	return EXIT_SUCCESS;
 }
 

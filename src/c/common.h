@@ -67,8 +67,6 @@ static inline int sort_test(const int argc,
 	printf("SORTED:\n");
 	print_int_data(cbegin(vec), cend(vec), vector_cadvance);
 #endif
-	// escape memory to avoid optimization in release mode
-	printf("%d\n", ((int*)vec->data)[size - 1]);
 	destroy_vector(vec);
 	return EXIT_SUCCESS;
 }

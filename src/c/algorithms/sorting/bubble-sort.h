@@ -10,14 +10,21 @@ static inline void bubble_sort(const Iterator begin,
 			       const CmpFun cmp,
 			       const AdvanceFun advance)
 {
-	for (Iterator it = begin; it.ptr != end.ptr; advance(&it, 1)) {
-		Iterator jend = end;
-		advance(&jend, -(1 + it.index));
-		for (Iterator j = begin; j.ptr != jend.ptr; advance(&j, 1)) {
-			Iterator jnext = j;
-			advance(&jnext, 1);
-			if (cmp(jnext.ptr, j.ptr) < 0)
-				swap(jnext.ptr, j.ptr);
+	UNUSED(swap);
+	unsigned char tmp[sizeof(int)];
+	for (int i = begin.index; i < end.index; ++i) {
+		const int jend = end.index - 1 - i;
+		for (int j = begin.index; j < jend; ++j) {
+			Iterator it1 = begin;
+			advance(&it1, j);
+			Iterator it2 = it1;
+			advance(&it2, 1);
+			if (cmp(it2.ptr, it1.ptr) < 0) {
+				memcpy(tmp, it1.ptr, sizeof(int));
+				memcpy(it1.ptr, it2.ptr, sizeof(int));
+				memcpy(it2.ptr, tmp, sizeof(int));
+				//swap(it2.ptr, it1.ptr);
+			}
 		}
 	}
 }
