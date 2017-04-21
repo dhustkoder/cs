@@ -5,7 +5,7 @@
 
 static inline Iterator quick_sort_part(const Iterator begin,
                                        const Iterator end,
-				       const int size,
+				       const SwapFun swap,
 				       const CmpFun cmp,
 				       const AdvanceFun advance)
 {
@@ -15,7 +15,6 @@ static inline Iterator quick_sort_part(const Iterator begin,
 	advance(&r, -1);
 
 	void* const p = begin.ptr;
-	unsigned char tmp[size];
 
 	for (;;) {
 		while (l.index < r.index && cmp(l.ptr, p) < 0)
@@ -26,32 +25,28 @@ static inline Iterator quick_sort_part(const Iterator begin,
 		if (l.index >= r.index)
 			break;
 
-		memcpy(tmp, r.ptr, size);
-		memcpy(r.ptr, l.ptr, size);
-		memcpy(l.ptr, tmp, size);
+		swap(l.ptr, r.ptr);
 
 		advance(&r, -1);
 		advance(&l, 1);
 	}
 
-	memcpy(tmp, r.ptr, size);
-	memcpy(r.ptr, p, size);
-	memcpy(p, tmp, size);
+	swap(r.ptr, p);
 	return r;
 }
 
 
 static inline void quick_sort(const Iterator begin,
                               const Iterator end,
-			      const int size,
+			      const SwapFun swap,
 			      const CmpFun cmp,
 			      const AdvanceFun advance)
 {
 	if ((end.index - begin.index) > 1) {
-		Iterator split = quick_sort_part(begin, end, size, cmp, advance);
-		quick_sort(begin, split, size, cmp, advance);
+		Iterator split = quick_sort_part(begin, end, swap, cmp, advance);
+		quick_sort(begin, split, swap, cmp, advance);
 		advance(&split, 1);
-		quick_sort(split, end, size, cmp, advance);
+		quick_sort(split, end, swap, cmp, advance);
 	}
 }
 

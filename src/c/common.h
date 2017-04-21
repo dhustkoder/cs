@@ -20,9 +20,17 @@ static inline Vector* create_int_vector_from_strings(const char* const* const st
 }
 
 
-static inline int cmp_int(const void* a, const void* b)
+static inline int cmp_int(const void* const a, const void* const b)
 {
 	return *((const int*)a) - *((const int*)b);
+}
+
+
+static inline void swap_int(void* const a, void* const b)
+{
+	int tmp = *((int*)a);
+	*((int*)a) = *((int*)b);
+	*((int*)b) = tmp;
 }
 
 
@@ -53,7 +61,7 @@ static inline int sort_test(const int argc,
 	print_int_data(cbegin(vec), cend(vec), vector_cadvance);
 #endif
 
-	sortfun(begin(vec), end(vec), sizeof(int), cmp_int, vector_advance);
+	sortfun(begin(vec), end(vec), swap_int, cmp_int, vector_advance);
 	
 #ifdef CSDEBUG
 	printf("SORTED:\n");
@@ -80,7 +88,7 @@ static inline int search_test(const int argc,
 	Vector* const vec = create_int_vector_from_strings(argv + 1, size);
 
 	if (searchfun == &binary_search)
-		quick_sort(begin(vec), end(vec), sizeof(int), cmp_int, vector_advance);
+		quick_sort(begin(vec), end(vec), swap_int, cmp_int, vector_advance);
 
 #ifdef CSDEBUG
 	printf("ARRAY:\n");
