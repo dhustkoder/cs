@@ -1,6 +1,7 @@
 using Common;
 using System;
 using System.Collections.Generic;
+using DataStructures;
 
 
 namespace Algorithms.Sorting
@@ -9,14 +10,14 @@ namespace Algorithms.Sorting
 	public class QuickSort : ISortingAlgorithm
 	{
 
-		public void Execute<T>(List<T> data)
+		public void Execute<T>(IDataStructure<T> data)
 		{
 			if (data.Count > 1)
 				QSort(0, data.Count, data);
 		}
 
 
-		private void QSort<T>(int beg, int end, List<T> data)
+		private void QSort<T>(int beg, int end, IDataStructure<T> data)
 		{
 			if ((end - beg) > 1) {
 				int r = Partitionate(beg, end, data);
@@ -26,7 +27,7 @@ namespace Algorithms.Sorting
 		}
 
 
-		private int Partitionate<T>(int beg, int end, List<T> data)
+		private int Partitionate<T>(int beg, int end, IDataStructure<T> data)
 		{
 			var comparer = Comparer<T>.Default;
 			int l = beg + 1;

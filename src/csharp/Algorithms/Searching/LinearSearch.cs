@@ -1,6 +1,7 @@
 using Common;
 using System;
 using System.Collections.Generic;
+using DataStructures;
 
 
 namespace Algorithms.Searching
@@ -9,7 +10,7 @@ namespace Algorithms.Searching
 	public class LinearSearch : ISearchingAlgorithm
 	{
 
-		public int Execute<T>(List<T> data, T target)
+		public int Execute<T>(IDataStructure<T> data, T target)
 		{
 			for (int i = 0; i < data.Count; ++i)
 				if (Comparer<T>.Default.Compare(data[i], target) == 0)

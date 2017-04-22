@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DataStructures;
 using Common;
 
 
@@ -9,7 +10,7 @@ namespace Algorithms.Searching
 	public class BinarySearch : ISearchingAlgorithm
 	{
 
-		public int Execute<T>(List<T> data, T target)
+		public int Execute<T>(IDataStructure<T> data, T target)
 		{
 			int min = 0;
 			int max = data.Count;

@@ -108,11 +108,14 @@ compileCSharp ()
 
 
 	CSINCLUDES=("${SRCDIR}/csharp/Common.cs"
-	            "${SRCDIR}/csharp/algorithms/sorting/ISortingAlgorithm.cs"
-		    "${SRCDIR}/csharp/algorithms/searching/ISearchingAlgorithm.cs")
+		    "${SRCDIR}/csharp/DataStructures/IDataStructure.cs"
+		    "${SRCDIR}/csharp/DataStructures/Vector.cs")
+	NOTCOMPILING=($CSINCLUDES
+	              "${SRCDIR}/csharp/Algorithms/Searching/ISearchingAlgorithm.cs"
+		      "${SRCDIR}/csharp/Algorithms/Sorting/ISortingAlgorithm.cs")
 
 
-	CSFILES=$(find "${SRCDIR}/csharp" -name '*.cs')
+	CSFILES=$(find "${SRCDIR}/csharp/Algorithms/" -name '*.cs')
 
 	mkdir -p "${BUILDDIR}/csharp"
 
@@ -120,48 +123,42 @@ compileCSharp ()
 
 		shouldCompile=true
 
-		for elem in ${CSINCLUDES[@]}; do
+		for elem in ${NOTCOMPILING[@]}; do
 			if [[ "$elem" == "$file" ]]; then
 				shouldCompile=false
 				break
 			fi
 		done
 
-
-		if [ $shouldCompile == true ]; then
-
-			mainClass=${file#"${SRCDIR}/csharp/"}
-			mainClass=${mainClass%'.cs'}
-
-			index=0
-			c="${mainClass:$index:1}"	
-			mainClass="${c^^}${mainClass:1}"
-			index=$((index + 1))
-
-			while [[ "$index" -lt ${#mainClass} ]]; do
-
-				if [[ "${mainClass:$index:1}" == "/" ]]; then
-					at=$((index + 1))
-					c="${mainClass:$at:1}"
-					at=$((at + 1))
-					mainClass="${mainClass:0:$index}.${c^^}${mainClass:$at}"
-				fi
-
-				index=$((index + 1))
-			done
-
-			otherFiles=""
-			for f in ${CSFILES}; do
-				if [[ "$file" != "$f" ]]; then
-					otherFiles="${otherFiles} ${f}"
-				fi
-			done
-
-			outname=$(basename ${file})
-			outname="${BUILDDIR}/csharp/${outname%'.cs'}-$mode.exe"
-			echo "Compiling ${file}: ${outname}"
-			mcs ${CSFLAGS} -main:${mainClass} ${file} ${otherFiles} -out:${outname}
+		if [ $shouldCompile == false ]; then
+			continue
 		fi
+
+
+		mainClass=${file#"${SRCDIR}/csharp/"}
+		mainClass=${mainClass%'.cs'}
+
+		index=0
+
+		while [[ "$index" -lt ${#mainClass} ]]; do
+			if [[ "${mainClass:$index:1}" == "/" ]]; then
+				af=$((index + 1))
+				mainClass="${mainClass:0:$index}.${mainClass:$af}"
+			fi
+			index=$((index + 1))
+		done
+
+		otherFiles=""
+		for f in ${CSFILES}; do
+			if [[ "$file" != "$f" ]]; then
+				otherFiles="${otherFiles} ${f}"
+			fi
+		done
+
+		outname=$(basename ${file})
+		outname="${BUILDDIR}/csharp/${outname%'.cs'}-$mode.exe"
+		echo "Compiling ${file}: ${outname}"
+		mcs ${CSFLAGS} -main:${mainClass} ${file} ${otherFiles} ${CSINCLUDES[@]} -out:${outname}
 	done
 }
 

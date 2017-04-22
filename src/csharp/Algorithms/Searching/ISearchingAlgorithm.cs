@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using DataStructures;
 
 
 namespace Algorithms.Searching
@@ -6,6 +7,6 @@ namespace Algorithms.Searching
 
 	public interface ISearchingAlgorithm
 	{
-		int Execute<T>(List<T> data, T target);
+		int Execute<T>(IDataStructure<T> data, T target);
 	}
 }

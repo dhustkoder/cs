@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DataStructures;
 using Common;
 
 
@@ -8,7 +9,7 @@ namespace Algorithms.Sorting
 
 	public class BubbleSort : ISortingAlgorithm
 	{
-		public void Execute<T>(List<T> data)
+		public void Execute<T>(IDataStructure<T> data)
 		{
 			var comparer = Comparer<T>.Default;
 
