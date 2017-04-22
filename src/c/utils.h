@@ -6,8 +6,8 @@
 
 typedef int(*CmpFun)(const void*, const void*);
 typedef void(*SwapFun)(void*, void*);
-typedef void(*AdvanceFun)(Iterator*, int);
-typedef void(*ConstAdvanceFun)(ConstIterator*, int);
+typedef Iterator(*AdvanceFun)(Iterator, int);
+typedef ConstIterator(*ConstAdvanceFun)(ConstIterator, int);
 typedef ConstIterator(*SearchFun)(ConstIterator, ConstIterator, const void*, CmpFun, ConstAdvanceFun);
 typedef void(*SortFun)(Iterator, Iterator, SwapFun, CmpFun, AdvanceFun);
 

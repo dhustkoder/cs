@@ -12,14 +12,10 @@ static inline void insertion_sort(const Iterator begin,
 {
 	for (int i = begin.index; i < end.index; ++i) {
 		for (int j = i; j > begin.index; --j) {
-			Iterator x = end;
-			advance(&x, -j);
-			Iterator y = x;
-			advance(&y, -1);
-
+			const Iterator x = advance(end, -j);
+			const Iterator y = advance(x, -1);
 			if (cmp(x.ptr, y.ptr) >= 0)
 				break;
-
 			swap(x.ptr, y.ptr);
 		}
 	}

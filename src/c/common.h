@@ -39,7 +39,7 @@ static inline void print_int_data(const ConstIterator begin,
 				  const ConstAdvanceFun advance)
 {
 	int i = 0;
-	for (ConstIterator it = begin; it.ptr != end.ptr; advance(&it, 1))
+	for (ConstIterator it = begin; it.ptr != end.ptr; it = advance(it, 1))
 		printf("[%d] = %d\n", i++, *((const int*)it.ptr));
 }
 
@@ -67,6 +67,7 @@ static inline int sort_test(const int argc,
 	printf("SORTED:\n");
 	print_int_data(cbegin(vec), cend(vec), vector_cadvance);
 #endif
+	
 	destroy_vector(vec);
 	return EXIT_SUCCESS;
 }

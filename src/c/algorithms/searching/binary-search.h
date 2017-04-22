@@ -14,8 +14,7 @@ static inline ConstIterator binary_search(const ConstIterator begin,
 
 	while (min <= max) {
 		const int guess = (min + max) / 2;
-		ConstIterator it = begin;
-		advance(&it, guess);
+		const ConstIterator it = advance(begin, guess);
 		const int result = cmp(it.ptr, target);
 		if (result < 0)
 			min = guess + 1;

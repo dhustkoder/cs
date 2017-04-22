@@ -144,20 +144,20 @@ static inline Iterator vector_end(Vector* const v)
 }
 
 
-static inline void vector_cadvance(ConstIterator* const it, const int n)
+static inline ConstIterator vector_cadvance(const ConstIterator it, const int n)
 {
-	const Vector* const v = it->ds;
-	it->ptr += v->membsize * n;
-	it->index += n;
+	const Vector* const v = it.ds;
+	const ConstIterator r = {v, it.ptr + v->membsize * n, it.index + n};
+	return r;
 }
 
 
-static inline void vector_advance(Iterator* const it, const int n)
+static inline Iterator vector_advance(const Iterator it, const int n)
 {
-	ConstIterator cit = {it->ds, it->ptr, it->index};
-	vector_cadvance(&cit, n);
-	it->ptr = (void*) cit.ptr;
-	it->index = cit.index;
+	ConstIterator cit = {it.ds, it.ptr, it.index};
+	cit = vector_cadvance(cit, n);
+	const Iterator r = {cit.ds, (void*)cit.ptr, cit.index};
+	return r;
 }
 
 

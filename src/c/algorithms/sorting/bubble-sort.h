@@ -13,10 +13,8 @@ static inline void bubble_sort(const Iterator begin,
 	for (int i = begin.index; i < end.index; ++i) {
 		const int jend = end.index - 1 - i;
 		for (int j = begin.index; j < jend; ++j) {
-			Iterator x = begin;
-			advance(&x, j);
-			Iterator y = x;
-			advance(&y, 1);
+			const Iterator x = advance(begin, j);
+			const Iterator y = advance(x, 1);
 			if (cmp(x.ptr, y.ptr) > 0)
 				swap(x.ptr, y.ptr);	
 		}
