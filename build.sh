@@ -13,7 +13,7 @@ compileCC ()
 	CXX_OUTPUT_DIR="${BUILDDIR}/cpp"
 	C_SRC_DIR="${SRCDIR}/c"
 	CXX_SRC_DIR="${SRCDIR}/cpp"
-	CFLAGS="-std=c11 -Wall -Wextra -pedantic"
+	CFLAGS="-std=c11 -Wall -Wextra -pedantic -DDS_VECTOR"
 	CFLAGS_DEBUG="-O1 -ggdb -fsanitize=address -DCSDEBUG"
 	CFLAGS_RELEASE="-O3 -DNDEBUG"
 	CXXFLAGS="-std=c++11 -Wall -Wextra -pedantic"

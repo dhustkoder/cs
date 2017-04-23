@@ -7,11 +7,23 @@
 #include "utils.h"
 
 
+#ifdef DS_VECTOR
+
+#define DSTYPE Vector
+#define CREATE_DS(nmemb, size) (create_vector(nmemb, size))
+#define DESTROY_DS(ds) (destroy_vector(ds))
+#define DS_CADVANCE vector_cadvance
+#define DS_ADVANCE vector_advance
+
+#elif defined(DS_LINKED_LIST)
+
 #define DSTYPE LinkedList
-#define CREATE_DS(nmeb, size) (create_linked_list(size))
-#define DESTROY_DS(...) (destroy_linked_list(__VA_ARGS__))
+#define CREATE_DS(nmemb, size) (create_linked_list(size))
+#define DESTROY_DS(ds) (destroy_linked_list(ds))
 #define DS_CADVANCE linked_list_cadvance
 #define DS_ADVANCE linked_list_advance
+
+#endif
 
 
 static inline DSTYPE* create_int_ds_from_strings(const char* const* const strs, const int size)
