@@ -41,7 +41,6 @@ static inline Vector* create_vector(const int nmemb, const int size)
 	v->bidx = 0;
 	return v;
 
-
 data_fail:
 	free(v);
 vec_fail:
@@ -116,19 +115,26 @@ static inline void vector_pop_back(Vector* const v)
 
 static inline ConstIterator vector_cbegin(const Vector* const v)
 {
-	ConstIterator it = {v, v->data, 0};
+	ConstIterator it = { .ds = { .membsize = v->membsize }, v->data, 0 };
 	return it;
 }
 
 
 static inline ConstIterator vector_cend(const Vector* const v)
 {
-	ConstIterator it = {v, v->data + v->bidx, v->bidx / v->membsize};
+	ConstIterator it = { .ds = { .membsize =  v->membsize }, v->data + v->bidx, v->bidx / v->membsize };
 	return it;
 }
 
 
-static inline Iterator vector_begin(Vector* const v)
+static inline ConstIterator vector_cadvance(const ConstIterator it, const int n)
+{
+	const ConstIterator r = {it.ds, it.ptr + it.ds.membsize * n, it.index + n};
+	return r;
+}
+
+
+static inline Iterator vector_begin(const Vector* const v)
 {
 	ConstIterator cit = vector_cbegin(v);
 	Iterator it = {cit.ds, (void*)cit.ptr, cit.index};
@@ -136,7 +142,7 @@ static inline Iterator vector_begin(Vector* const v)
 }
 
 
-static inline Iterator vector_end(Vector* const v)
+static inline Iterator vector_end(const Vector* const v)
 {
 	ConstIterator cit = vector_cend(v);
 	Iterator it = {cit.ds, (void*)cit.ptr, cit.index};
@@ -144,19 +150,11 @@ static inline Iterator vector_end(Vector* const v)
 }
 
 
-static inline ConstIterator vector_cadvance(const ConstIterator it, const int n)
-{
-	const Vector* const v = it.ds;
-	const ConstIterator r = {v, it.ptr + v->membsize * n, it.index + n};
-	return r;
-}
-
-
 static inline Iterator vector_advance(const Iterator it, const int n)
 {
-	ConstIterator cit = {it.ds, it.ptr, it.index};
-	cit = vector_cadvance(cit, n);
-	const Iterator r = {cit.ds, (void*)cit.ptr, cit.index};
+	const ConstIterator ip = {it.ds, it.ptr, it.index};
+	const ConstIterator ir = vector_cadvance(ip, n);
+	const Iterator r = {ir.ds, (void*)ir.ptr, ir.index};
 	return r;
 }
 

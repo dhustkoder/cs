@@ -7,16 +7,23 @@
 #include "utils.h"
 
 
-static inline Vector* create_int_vector_from_strings(const char* const* const strs, const int size)
+#define DSTYPE LinkedList
+#define CREATE_DS(nmeb, size) (create_linked_list(size))
+#define DESTROY_DS(...) (destroy_linked_list(__VA_ARGS__))
+#define DS_CADVANCE linked_list_cadvance
+#define DS_ADVANCE linked_list_advance
+
+
+static inline DSTYPE* create_int_ds_from_strings(const char* const* const strs, const int size)
 {
-	Vector* const v = create_vector(size, sizeof(int));
+	DSTYPE* const ds = CREATE_DS(size, sizeof(int));
 
 	for (int i = 0; i < size; ++i) {
 		const int num = strtol(strs[i], NULL, 0);
-		push_back(&num, v);
+		push_back(&num, ds);
 	}
 
-	return v;
+	return ds;
 }
 
 
@@ -54,21 +61,21 @@ static inline int sort_test(const int argc,
 	}
 
 	const int size = argc - 1;
-	Vector* const vec = create_int_vector_from_strings(argv + 1, size);
+	DSTYPE* const ds = create_int_ds_from_strings(argv + 1, size);
 
 #ifdef CSDEBUG
 	printf("UNSORTED:\n");
-	print_int_data(cbegin(vec), cend(vec), vector_cadvance);
+	print_int_data(cbegin(ds), cend(ds), DS_CADVANCE);
 #endif
 
-	sortfun(begin(vec), end(vec), swap_int, cmp_int, vector_advance);
+	sortfun(begin(ds), end(ds), swap_int, cmp_int, DS_ADVANCE);
 	
 #ifdef CSDEBUG
 	printf("SORTED:\n");
-	print_int_data(cbegin(vec), cend(vec), vector_cadvance);
+	print_int_data(cbegin(ds), cend(ds), DS_CADVANCE);
 #endif
 	
-	destroy_vector(vec);
+	DESTROY_DS(ds);
 	return EXIT_SUCCESS;
 }
 
@@ -84,21 +91,21 @@ static inline int search_test(const int argc,
 
 	const int size = argc - 2;
 	const int target = strtol(argv[argc - 1], NULL, 0);
-	Vector* const vec = create_int_vector_from_strings(argv + 1, size);
+	DSTYPE* const ds = create_int_ds_from_strings(argv + 1, size);
 
 #ifdef CSDEBUG
 	printf("ARRAY:\n");
-	print_int_data(cbegin(vec), cend(vec), vector_cadvance);
+	print_int_data(cbegin(ds), cend(ds), DS_CADVANCE);
 #endif
 
-	const ConstIterator found = searchfun(cbegin(vec), cend(vec), &target, cmp_int, vector_cadvance);
+	const ConstIterator found = searchfun(cbegin(ds), cend(ds), &target, cmp_int, DS_CADVANCE);
 
-	if (found.ptr != cend(vec).ptr)
+	if (found.ptr != cend(ds).ptr)
 		printf("%d FOUND AT INDEX %d\n", *((const int*)found.ptr), found.index);
 	else
 		printf("%d NOT FOUND\n", target);
 
-	destroy_vector(vec);
+	DESTROY_DS(ds);
 	return EXIT_SUCCESS;
 }
 
