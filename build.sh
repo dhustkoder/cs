@@ -9,16 +9,20 @@ BUILDDIR="${BASEDIR}/build"
 compileCC ()
 {
 	echo "BUILDING C AND C++ SOURCE CODE"
-	C_OUTPUT_DIR="${BUILDDIR}/c"
-	CXX_OUTPUT_DIR="${BUILDDIR}/cpp"
+
 	C_SRC_DIR="${SRCDIR}/c"
-	CXX_SRC_DIR="${SRCDIR}/cpp"
+	C_OUTPUT_DIR="${BUILDDIR}/c"
 	CFLAGS="-std=c11 -Wall -Wextra -pedantic -DDS_VECTOR"
 	CFLAGS_DEBUG="-O1 -ggdb -fsanitize=address -DCSDEBUG"
-	CFLAGS_RELEASE="-O3 -DNDEBUG"
+	CFLAGS_RELEASE="-Ofast -DNDEBUG"
+
+
+	CXX_OUTPUT_DIR="${BUILDDIR}/cpp"
+	CXX_SRC_DIR="${SRCDIR}/cpp"
 	CXXFLAGS="-std=c++11 -Wall -Wextra -pedantic"
 	CXXFLAGS_DEBUG=$CFLAGS_DEBUG
 	CXXFLAGS_RELEASE=$CFLAGS_RELEASE
+
 
 	if [ "$CC" == "" ]; then
 		CC=gcc

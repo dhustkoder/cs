@@ -13,6 +13,7 @@ static inline ConstIterator linear_search(const ConstIterator begin,
 	for (ConstIterator it = begin; it.index < end.index; it = advance(it, 1))
 		if (cmp(target, it.ptr) == 0)
 			return it;
+
 	return end;
 }
 

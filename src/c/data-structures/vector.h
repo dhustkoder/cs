@@ -9,6 +9,13 @@
 #include "iterator.h"
 
 
+#define VECITR(membsize_, ptr_, index_) { \
+        .membsize = (membsize_),          \
+        .ptr = (ptr_),                    \
+        .index = (index_)                 \
+}
+
+
 typedef struct Vector {
 	unsigned char* data;
 	int bytes;
@@ -22,29 +29,27 @@ static inline Vector* create_vector(const int nmemb, const int size)
 	unsigned long long bytes = ((unsigned long long)nmemb) * size;
 
 	if (bytes >= INT_MAX) {
-		fprintf(stderr, "Failed to create vector, size in bytes must fit an int variable\n");
+		fprintf(stderr, "Failed to create vector, "
+				"size in bytes must fit an int variable.\n");
 		return NULL;
 	}
 
 	Vector* const v = malloc(sizeof(Vector));
 
-	if (v == NULL)
-		goto vec_fail;
+	if (v != NULL) {
+		v->data = malloc(bytes);
 
-	v->data = malloc(bytes);
+		if (v->data != NULL) {
+			v->membsize = size;
+			v->bytes = bytes;
+			v->bidx = 0;
+			return v;
+		}
 
-	if (v->data == NULL)
-		goto data_fail;
+		free(v);
+	}
 
-	v->membsize = size;
-	v->bytes = bytes;
-	v->bidx = 0;
-	return v;
-
-data_fail:
-	free(v);
-vec_fail:
-	fprintf(stderr, "Couldn't allocate memory\n");
+	perror("Couldn't allocate memory");
 	return NULL;
 }
 
@@ -115,81 +120,51 @@ static inline void vector_pop_back(Vector* const v)
 
 static inline ConstIterator vector_cbegin(const Vector* const v)
 {
-	const ConstIterator it = {
-		.ds.membsize = v->membsize,
-		v->data,
-		0
-	};
+	const ConstIterator it = VECITR(v->membsize, v->data, 0);
 	return it;
 }
 
 
 static inline ConstIterator vector_cend(const Vector* const v)
 {
-	const ConstIterator it = {
-		.ds.membsize = v->membsize,
-		v->data + v->bidx,
-		v->bidx / v->membsize
-	};
+	const ConstIterator it = VECITR(v->membsize, v->data + v->bidx, v->bidx / v->membsize);
 	return it;
 }
 
 
 static inline ConstIterator vector_cadvance(const ConstIterator it, const int n)
 {
-	const ConstIterator r = {
-		.ds.membsize = it.ds.membsize,
-		it.ptr + it.ds.membsize * n,
-		it.index + n
-	};
+	const ConstIterator r = VECITR(it.membsize, it.ptr + it.membsize * n, it.index + n);
 	return r;
 }
 
 
 static inline Iterator vector_begin(const Vector* const v)
 {
-	const ConstIterator cit = vector_cbegin(v);
-	const Iterator it = {
-		.ds.membsize = cit.ds.membsize,
-		(void*) cit.ptr,
-		cit.index
-	};
-	return it;
+	const ConstIterator it = vector_cbegin(v);
+	const Iterator r = VECITR(it.membsize, (void*)it.ptr, it.index);
+	return r;
 }
 
 
 static inline Iterator vector_end(const Vector* const v)
 {
-	const ConstIterator cit = vector_cend(v);
-	const Iterator it = {
-		.ds.membsize = cit.ds.membsize,
-		(void*) cit.ptr,
-		cit.index
-	};
-	return it;
+	const ConstIterator it = vector_cend(v);
+	const Iterator r = VECITR(it.membsize, (void*)it.ptr, it.index);
+	return r;
 }
 
 
 static inline Iterator vector_advance(const Iterator it, const int n)
 {
-	const ConstIterator ip = {
-		.ds.membsize = it.ds.membsize,
-		it.ptr,
-		it.index
-	};
-
-	const ConstIterator ir = vector_cadvance(ip, n);
-
-	const Iterator r = {
-		.ds.membsize = ir.ds.membsize,
-		(void*) ir.ptr,
-		ir.index
-	};
-
+	const ConstIterator in = VECITR(it.membsize, it.ptr, it.index);
+	const ConstIterator out = vector_cadvance(in, n);
+	const Iterator r = VECITR(out.membsize, (void*)out.ptr, out.index);
 	return r;
 }
 
 
+#undef VECITR
 
 #endif
 

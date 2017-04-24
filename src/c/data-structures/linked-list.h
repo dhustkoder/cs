@@ -6,6 +6,13 @@
 #include "iterator.h"
 
 
+#define LLITR(ll_, ptr_, index_) { \
+        .ll = (ll_),               \
+	.ptr = (ptr_),             \
+	.index = (index_),         \
+}
+
+
 typedef struct Node {
 	struct Node* next;
 	unsigned char value[];
@@ -23,14 +30,17 @@ typedef struct LinkedList {
 static inline LinkedList* create_linked_list(const int membsize)
 {
 	LinkedList* const l = malloc(sizeof(LinkedList));
-	if (l == NULL)
-		return NULL;
 
-	l->head = NULL;
-	l->tail = NULL;
-	l->membsize = membsize;
-	l->count = 0;
-	return l;
+	if (l != NULL) {
+		l->head = NULL;
+		l->tail = NULL;
+		l->membsize = membsize;
+		l->count = 0;
+		return l;
+	}
+
+	perror("Couldn't allocate memory");
+	return NULL;
 }
 
 
@@ -129,58 +139,56 @@ static inline void* linked_list_get(const int index, const LinkedList* const l)
 
 static inline ConstIterator linked_list_cbegin(const LinkedList* const l)
 {
-	if (l->head != NULL) {
-		const ConstIterator it = { .ds.ll = l, l->head->value, 0 };
-		return it;
-	}
-	const ConstIterator it = { .ds.ll = l, NULL, 0 };
+	const ConstIterator it = LLITR(l, l->head != NULL ? l->head->value : NULL, 0);
 	return it;
 }
 
 
 static inline ConstIterator linked_list_cend(const LinkedList* const l)
 {
-	const ConstIterator it = { .ds.ll = l, NULL, l->count };
+	const ConstIterator it = LLITR(l, NULL, l->count);
 	return it;
 }
 
 
 static inline ConstIterator linked_list_cadvance(const ConstIterator it, const int n)
 {
-	const LinkedList* const l = it.ds.ll;
+	const LinkedList* const l = it.ll;
 	const int newindex = it.index + n;
 	const Node* const node = linked_list_get_node(newindex, l);
 	const void* const ptr = node != NULL ? node->value : NULL;
-	const ConstIterator r = { it.ds, ptr, newindex };
+	const ConstIterator r = LLITR(l, ptr, newindex);
 	return r;
 }
 
 
 static inline Iterator linked_list_begin(const LinkedList* const l)
 {
-	const ConstIterator cit = linked_list_cbegin(l);
-	const Iterator it = { cit.ds, (void*) cit.ptr, cit.index };
-	return it;
+	const ConstIterator it = linked_list_cbegin(l);
+	const Iterator r = LLITR(it.ll, (void*) it.ptr, it.index);
+	return r;
 }
 
 
 static inline Iterator linked_list_end(const LinkedList* const l)
 {
-	const ConstIterator cit = linked_list_cend(l);
-	const Iterator it = { cit.ds, (void*) cit.ptr, cit.index };
-	return it;
+	const ConstIterator it = linked_list_cend(l);
+	const Iterator r = LLITR(it.ll, (void*) it.ptr, it.index);
+	return r;
 }
 
 
 static inline Iterator linked_list_advance(const Iterator it, const int n)
 {
 
-	const ConstIterator cit = { it.ds, it.ptr, it.index };
-	const ConstIterator rit = linked_list_cadvance(cit, n);
-	const Iterator r = { rit.ds, (void*) rit.ptr, rit.index };
+	const ConstIterator in = LLITR(it.ll, it.ptr, it.index);
+	const ConstIterator out = linked_list_cadvance(in, n);
+	const Iterator r = LLITR(out.ll, (void*) out.ptr, out.index);
 	return r;
 }
 
+
+#undef LLITR
 
 #endif
 
