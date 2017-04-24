@@ -115,7 +115,8 @@ static inline void vector_pop_back(Vector* const v)
 
 static inline ConstIterator vector_cbegin(const Vector* const v)
 {
-	const ConstIterator it = { .ds.membsize = v->membsize,
+	const ConstIterator it = {
+		.ds.membsize = v->membsize,
 		v->data,
 		0
 	};
@@ -125,7 +126,8 @@ static inline ConstIterator vector_cbegin(const Vector* const v)
 
 static inline ConstIterator vector_cend(const Vector* const v)
 {
-	const ConstIterator it = { .ds.membsize =  v->membsize,
+	const ConstIterator it = {
+		.ds.membsize = v->membsize,
 		v->data + v->bidx,
 		v->bidx / v->membsize
 	};
@@ -135,7 +137,11 @@ static inline ConstIterator vector_cend(const Vector* const v)
 
 static inline ConstIterator vector_cadvance(const ConstIterator it, const int n)
 {
-	const ConstIterator r = { it.ds, it.ptr + it.ds.membsize * n, it.index + n };
+	const ConstIterator r = {
+		.ds.membsize = it.ds.membsize,
+		it.ptr + it.ds.membsize * n,
+		it.index + n
+	};
 	return r;
 }
 
@@ -143,7 +149,11 @@ static inline ConstIterator vector_cadvance(const ConstIterator it, const int n)
 static inline Iterator vector_begin(const Vector* const v)
 {
 	const ConstIterator cit = vector_cbegin(v);
-	const Iterator it = { cit.ds, (void*)cit.ptr, cit.index };
+	const Iterator it = {
+		.ds.membsize = cit.ds.membsize,
+		(void*) cit.ptr,
+		cit.index
+	};
 	return it;
 }
 
@@ -151,16 +161,31 @@ static inline Iterator vector_begin(const Vector* const v)
 static inline Iterator vector_end(const Vector* const v)
 {
 	const ConstIterator cit = vector_cend(v);
-	const Iterator it = { cit.ds, (void*)cit.ptr, cit.index };
+	const Iterator it = {
+		.ds.membsize = cit.ds.membsize,
+		(void*) cit.ptr,
+		cit.index
+	};
 	return it;
 }
 
 
 static inline Iterator vector_advance(const Iterator it, const int n)
 {
-	const ConstIterator ip = { it.ds, it.ptr, it.index };
+	const ConstIterator ip = {
+		.ds.membsize = it.ds.membsize,
+		it.ptr,
+		it.index
+	};
+
 	const ConstIterator ir = vector_cadvance(ip, n);
-	const Iterator r = { ir.ds, (void*)ir.ptr, ir.index };
+
+	const Iterator r = {
+		.ds.membsize = ir.ds.membsize,
+		(void*) ir.ptr,
+		ir.index
+	};
+
 	return r;
 }
 
