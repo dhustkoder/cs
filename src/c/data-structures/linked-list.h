@@ -7,7 +7,7 @@
 
 
 #define LLITR(ll_, ptr_, index_) { \
-        .ll = (ll_),               \
+        .ds.ll = (ll_),            \
 	.ptr = (ptr_),             \
 	.index = (index_),         \
 }
@@ -153,7 +153,7 @@ static inline ConstIterator linked_list_cend(const LinkedList* const l)
 
 static inline ConstIterator linked_list_cadvance(const ConstIterator it, const int n)
 {
-	const LinkedList* const l = it.ll;
+	const LinkedList* const l = it.ds.ll;
 	const int newindex = it.index + n;
 	const Node* const node = linked_list_get_node(newindex, l);
 	const void* const ptr = node != NULL ? node->value : NULL;
@@ -165,7 +165,7 @@ static inline ConstIterator linked_list_cadvance(const ConstIterator it, const i
 static inline Iterator linked_list_begin(const LinkedList* const l)
 {
 	const ConstIterator it = linked_list_cbegin(l);
-	const Iterator r = LLITR(it.ll, (void*) it.ptr, it.index);
+	const Iterator r = LLITR(it.ds.ll, (void*) it.ptr, it.index);
 	return r;
 }
 
@@ -173,7 +173,7 @@ static inline Iterator linked_list_begin(const LinkedList* const l)
 static inline Iterator linked_list_end(const LinkedList* const l)
 {
 	const ConstIterator it = linked_list_cend(l);
-	const Iterator r = LLITR(it.ll, (void*) it.ptr, it.index);
+	const Iterator r = LLITR(it.ds.ll, (void*) it.ptr, it.index);
 	return r;
 }
 
@@ -181,9 +181,9 @@ static inline Iterator linked_list_end(const LinkedList* const l)
 static inline Iterator linked_list_advance(const Iterator it, const int n)
 {
 
-	const ConstIterator in = LLITR(it.ll, it.ptr, it.index);
+	const ConstIterator in = LLITR(it.ds.ll, it.ptr, it.index);
 	const ConstIterator out = linked_list_cadvance(in, n);
-	const Iterator r = LLITR(out.ll, (void*) out.ptr, out.index);
+	const Iterator r = LLITR(out.ds.ll, (void*) out.ptr, out.index);
 	return r;
 }
 

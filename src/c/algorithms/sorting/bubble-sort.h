@@ -16,7 +16,7 @@ static inline void bubble_sort(const Iterator begin,
 			const Iterator x = advance(begin, j);
 			const Iterator y = advance(x, 1);
 			if (cmp(x.ptr, y.ptr) > 0)
-				swap(x.ptr, y.ptr);	
+				swap(x.ptr, y.ptr);
 		}
 	}
 }

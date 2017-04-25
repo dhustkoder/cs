@@ -10,7 +10,7 @@
 
 
 #define VECITR(membsize_, ptr_, index_) { \
-        .membsize = (membsize_),          \
+        .ds.membsize = (membsize_),       \
         .ptr = (ptr_),                    \
         .index = (index_)                 \
 }
@@ -134,7 +134,7 @@ static inline ConstIterator vector_cend(const Vector* const v)
 
 static inline ConstIterator vector_cadvance(const ConstIterator it, const int n)
 {
-	const ConstIterator r = VECITR(it.membsize, it.ptr + it.membsize * n, it.index + n);
+	const ConstIterator r = VECITR(it.ds.membsize, it.ptr + it.ds.membsize * n, it.index + n);
 	return r;
 }
 
@@ -142,7 +142,7 @@ static inline ConstIterator vector_cadvance(const ConstIterator it, const int n)
 static inline Iterator vector_begin(const Vector* const v)
 {
 	const ConstIterator it = vector_cbegin(v);
-	const Iterator r = VECITR(it.membsize, (void*)it.ptr, it.index);
+	const Iterator r = VECITR(it.ds.membsize, (void*)it.ptr, it.index);
 	return r;
 }
 
@@ -150,16 +150,16 @@ static inline Iterator vector_begin(const Vector* const v)
 static inline Iterator vector_end(const Vector* const v)
 {
 	const ConstIterator it = vector_cend(v);
-	const Iterator r = VECITR(it.membsize, (void*)it.ptr, it.index);
+	const Iterator r = VECITR(it.ds.membsize, (void*)it.ptr, it.index);
 	return r;
 }
 
 
 static inline Iterator vector_advance(const Iterator it, const int n)
 {
-	const ConstIterator in = VECITR(it.membsize, it.ptr, it.index);
+	const ConstIterator in = VECITR(it.ds.membsize, it.ptr, it.index);
 	const ConstIterator out = vector_cadvance(in, n);
-	const Iterator r = VECITR(out.membsize, (void*)out.ptr, out.index);
+	const Iterator r = VECITR(out.ds.membsize, (void*)out.ptr, out.index);
 	return r;
 }
 
