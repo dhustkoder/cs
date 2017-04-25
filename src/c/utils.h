@@ -1,5 +1,7 @@
 #ifndef CS_UNUSED_H_
 #define CS_UNUSED_H_
+#include "data-structures/iterator.h"
+
 
 #define UNUSED(x) ((void)x)
 

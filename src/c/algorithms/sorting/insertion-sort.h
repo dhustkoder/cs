@@ -1,6 +1,5 @@
 #ifndef CS_ALGORITHMS_INSERTION_SORT_H_
 #define CS_ALGORITHMS_INSERTION_SORT_H_
-#include <string.h>
 #include "utils.h"
 
 

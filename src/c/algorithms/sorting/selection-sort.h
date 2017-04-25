@@ -1,6 +1,5 @@
 #ifndef CS_ALGORITHMS_SELECTION_SORT_H_
 #define CS_ALGORITHMS_SELECTION_SORT_H_
-#include "data-structures/iterator.h"
 #include "utils.h"
 
 

@@ -1,7 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include "../../common.h"
 #include "insertion-sort.h"
+#include "common.h"
 
 
 int main(const int argc, const char* const* const argv)

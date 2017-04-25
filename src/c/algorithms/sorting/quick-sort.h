@@ -1,6 +1,6 @@
 #ifndef CS_ALGORITHMS_QUICK_SORT_H_
 #define CS_ALGORITHMS_QUICK_SORT_H_
-#include <string.h>
+#include "utils.h"
 
 
 static inline Iterator quick_sort_part(const Iterator begin,

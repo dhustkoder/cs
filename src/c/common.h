@@ -1,6 +1,7 @@
 #ifndef CS_COMMON_H_
 #define CS_COMMON_H_
 #include <stdlib.h>
+#include <stdio.h>
 #include "data-structures/ds-generics.h"
 #include "algorithms/searching/binary-search.h"
 #include "algorithms/sorting/quick-sort.h"

@@ -1,6 +1,5 @@
 #ifndef CS_ALGORITHMS_SEARCHING_LINEAR_SEARCH_H_
 #define CS_ALGORITHMS_SEARCHING_LINEAR_SEARCH_H_
-#include <stdlib.h>
 #include "utils.h"
 
 
