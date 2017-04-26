@@ -1,6 +1,3 @@
-#include <iostream>
-#include <vector>
-#include <string>
 #include "common.hpp"
 #include "linear-search.hpp"
 

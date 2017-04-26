@@ -1,12 +1,12 @@
 #include "common.hpp"
-#include "bubble-sort.hpp"
+#include "selection-sort.hpp"
 
 
 struct SortFun {
 	template<class T, class CmpFun>
 	void operator()(T begin, T end, CmpFun cmpfun) &&
 	{
-		return bubble_sort(begin, end, cmpfun);
+		return selection_sort(begin, end, cmpfun);
 	}
 };
 

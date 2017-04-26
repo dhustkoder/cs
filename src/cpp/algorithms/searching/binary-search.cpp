@@ -1,9 +1,5 @@
-#include <iostream>
-#include <vector>
-#include <string>
 #include "common.hpp"
 #include "binary-search.hpp"
-#include "algorithms/sorting/quick-sort.hpp"
 
 
 struct SearchFun {

@@ -1,11 +1,11 @@
-#include <iostream>
 #include "common.hpp"
 #include "quick-sort.hpp"
 
 
 struct SortFun {
 	template<class T, class CmpFun>
-	void operator()(T begin, T end, CmpFun cmpfun) && {
+	void operator()(T begin, T end, CmpFun cmpfun) &&
+	{
 		return quick_sort(begin, end, cmpfun);
 	}
 };

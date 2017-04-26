@@ -5,7 +5,7 @@
 
 
 template<class Itr, class Fn>
-Itr quick_sort_part(const Itr begin, const Itr end, Fn compare)
+Itr quick_sort_part(const Itr begin, const Itr end, Fn cmp)
 {
 	const auto p = begin;
 	auto l = std::next(begin);
@@ -15,14 +15,14 @@ Itr quick_sort_part(const Itr begin, const Itr end, Fn compare)
 	for (;;) {
 		while (l < r) {
 			const auto& lval = *l;
-			if (!compare(lval, pval))
+			if (!cmp(lval, pval))
 				break;
 			l = std::next(l);
 		}
 
 		while (r >= l) {
 			const auto& rval = *r;
-			if (!compare(pval, rval))
+			if (!cmp(pval, rval))
 				break;
 			r = std::prev(r);
 		}
