@@ -8,10 +8,10 @@ import java.util.*;
 public class InsertionSort implements SortingAlgorithm
 {
 
-	public <T extends Comparable<T>> void execute(DataStructure<T> data)
+	public <T extends Comparable<T>> void execute(DataStructure<T> data, final Comparator<T> cmp)
 	{
 		for (int i = 1; i < data.size(); ++i) {
-			for (int j = i; j > 0 && data.get(j).compareTo(data.get(j - 1)) < 0; --j) {
+			for (int j = i; j > 0 && cmp.compare(data.get(j), data.get(j - 1)) < 0; --j) {
 				final T tmp = data.get(j);
 				data.set(j, data.get(j - 1));
 				data.set(j - 1, tmp);

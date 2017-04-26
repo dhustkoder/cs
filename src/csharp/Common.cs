@@ -44,7 +44,7 @@ namespace Common
 			Utils.PrintData(data);
 			#endif
 
-			sort.Execute(data);
+			sort.Execute(data, (int a, int b) => { return a < b; });
 
 			#if CSDEBUG
 			Console.WriteLine("SORTED:");

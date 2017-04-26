@@ -9,13 +9,11 @@ namespace Algorithms.Sorting
 
 	public class BubbleSort : ISortingAlgorithm
 	{
-		public void Execute<T>(IDataStructure<T> data)
+		public void Execute<T>(IDataStructure<T> data, Func<T, T, bool> cmp)
 		{
-			var comparer = Comparer<T>.Default;
-
 			for (int i = 0; i < data.Count; ++i) {
 				for (int j = 0; j < (data.Count - 1) - i; ++j) {
-					if (comparer.Compare(data[j], data[j + 1]) > 0) {
+					if (cmp(data[j + 1], data[j])) {
 						T tmp = data[j];
 						data[j] = data[j + 1];
 						data[j + 1] = tmp;

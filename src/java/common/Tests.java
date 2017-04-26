@@ -3,6 +3,7 @@ import src.java.common.Utils;
 import src.java.algorithms.sorting.*;
 import src.java.algorithms.searching.*;
 import src.java.data_structures.*;
+import java.util.function.*;
 
 
 public class Tests 
@@ -23,7 +24,7 @@ public class Tests
 			Utils.printData(array);
 		}
 
-		sortAlgo.execute(array);
+		sortAlgo.execute(array, (final Integer a, final Integer b) -> a - b);
 
 		if (CSDEBUG) {
 			System.out.println("SORTED:");

@@ -10,33 +10,32 @@ namespace Algorithms.Sorting
 	public class QuickSort : ISortingAlgorithm
 	{
 
-		public void Execute<T>(IDataStructure<T> data)
+		public void Execute<T>(IDataStructure<T> data, Func<T, T, bool> cmp)
 		{
 			if (data.Count > 1)
-				QSort(0, data.Count, data);
+				QSort(0, data.Count, data, cmp);
 		}
 
 
-		private void QSort<T>(int beg, int end, IDataStructure<T> data)
+		private void QSort<T>(int beg, int end, IDataStructure<T> data, Func<T, T, bool> cmp)
 		{
 			if ((end - beg) > 1) {
-				int r = Partitionate(beg, end, data);
-				QSort(r + 1, end, data);
-				QSort(beg, r, data);
+				int r = Partitionate(beg, end, data, cmp);
+				QSort(r + 1, end, data, cmp);
+				QSort(beg, r, data, cmp);
 			}
 		}
 
 
-		private int Partitionate<T>(int beg, int end, IDataStructure<T> data)
+		private int Partitionate<T>(int beg, int end, IDataStructure<T> data, Func<T, T, bool> cmp)
 		{
-			var comparer = Comparer<T>.Default;
 			int l = beg + 1;
 			int r = end - 1;
 
 			for (;;) {
-				while (l < r && comparer.Compare(data[l], data[beg]) < 0)
+				while (l < r && cmp(data[l], data[beg]))
 					l += 1;
-				while (r >= l && comparer.Compare(data[r], data[beg]) > 0)
+				while (r >= l && cmp(data[beg], data[r]))
 					r -= 1;
 
 				if (l >= r)
