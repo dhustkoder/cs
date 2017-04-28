@@ -14,14 +14,18 @@ compileCC ()
 	C_OUTPUT_DIR="${BUILDDIR}/c"
 	CFLAGS="-std=c11 -Wall -Wextra -pedantic -DDS_VECTOR"
 	CFLAGS_DEBUG="-O1 -ggdb -fsanitize=address -DCSDEBUG"
-	CFLAGS_RELEASE="-Ofast -DNDEBUG"
+	CFLAGS_RELEASE="-Ofast -fomit-frame-pointer -fno-math-errno -s -fno-ident       \
+	                -ffunction-sections -fdata-sections -Wl,--gc-sections           \
+			-fno-unwind-tables -fno-asynchronous-unwind-tables              \
+			-fno-stack-protector -fomit-frame-pointer -fmerge-all-constants \
+			-DNDEBUG"
 
 
 	CXX_OUTPUT_DIR="${BUILDDIR}/cpp"
 	CXX_SRC_DIR="${SRCDIR}/cpp"
 	CXXFLAGS="-std=c++11 -Wall -Wextra -pedantic"
 	CXXFLAGS_DEBUG=$CFLAGS_DEBUG
-	CXXFLAGS_RELEASE=$CFLAGS_RELEASE
+	CXXFLAGS_RELEASE="$CFLAGS_RELEASE -fno-rtti"
 
 
 	if [ "$CC" == "" ]; then
