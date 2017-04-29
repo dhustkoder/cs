@@ -16,9 +16,7 @@ namespace Algorithms.Searching
 			int max = data.Count;
 
 			while (min <= max) {
-
 				int guess = (min + max) / 2;
-
 				var comparison = Comparer<T>.Default.Compare(data[guess], target);
 
 				if (comparison < 0)
@@ -27,7 +25,6 @@ namespace Algorithms.Searching
 					max = guess - 1;
 				else
 					return guess;
-
 			}
 
 			return data.Count;

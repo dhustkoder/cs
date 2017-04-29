@@ -13,7 +13,6 @@ public class BinarySearch implements SearchingAlgorithm
 		int r = data.size() - 1;
 
 		while (r >= l) {
-
 			final int guess = (l + r) / 2;
 			final int cmp = data.get(guess).compareTo(target);
 

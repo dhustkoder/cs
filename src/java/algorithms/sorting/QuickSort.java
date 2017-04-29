@@ -32,8 +32,6 @@ public class QuickSort implements SortingAlgorithm
 
 	
 		for (;;) {
-
-
 			while (l < r && cmp.compare(data.get(l), data.get(p)) < 0)
 				++l;
 			while (r >= l && cmp.compare(data.get(p), data.get(r)) < 0)
