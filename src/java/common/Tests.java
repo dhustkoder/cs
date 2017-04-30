@@ -8,7 +8,7 @@ import java.util.function.*;
 
 public class Tests 
 {
-	static final boolean CSDEBUG = false;
+	static final boolean CSDEBUG = true;
 
 	public static void sort(final String[] args, final SortingAlgorithm sortAlgo)
 	{
