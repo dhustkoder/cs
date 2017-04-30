@@ -12,7 +12,7 @@ compileCC ()
 
 	C_SRC_DIR="${SRCDIR}/c"
 	C_OUTPUT_DIR="${BUILDDIR}/c"
-	CFLAGS="-std=c11 -Wall -Wextra -pedantic -DDS_VECTOR"
+	CFLAGS="-std=c11 -Wall -Wextra -pedantic -DDS_VECTOR -DDS_TYPE_INT"
 	CFLAGS_DEBUG="-O1 -ggdb -fsanitize=address -DCSDEBUG"
 	CFLAGS_RELEASE="-Ofast -fomit-frame-pointer -fno-math-errno -s -fno-ident       \
 	                -ffunction-sections -fdata-sections -Wl,--gc-sections           \
@@ -79,37 +79,24 @@ compileCC ()
 }
 
 
-compilePy ()
-{
-	echo "BUILDING PYTHON SOURCE CODE"
-	wd=$(pwd)
-	for pysrc in $(find "${SRCDIR}/python" -name '*test.py'); do
-		cd $(dirname $pysrc)
-		echo "Compiling ${pysrc}: ${pysrc}"
-		python -m py_compile $(basename ${pysrc})
-		cd $wd
-	done
-}
-
-
-compileJava ()
-{
-	echo "BUILDING JAVA SOURCE CODE"
-	javac -Xlint $(find "${SRCDIR}/java" -name '*.java')
-}
-
-
 compileCSharp ()
 {
 	echo "BUILDING C# SOURCE CODE"
 
+	CSFLAGS="-warn:4 -warnaserror:+ -define:DS_TYPE_INT -define:DS_VECTOR"
+	CSFLAGS_DEBUG="-define:CSDEBUG -optimize:-"
+	CSFLAGS_RELEASE="-optimize:+"
+
 	mode="$1"
 
 	if [[ "$mode" == "release" ]]; then
-		CSFLAGS="-optimize:+ -warn:4 -warnaserror:+"
+		CSFLAGS="${CSFLAGS} ${CSFLAGS_RELEASE}"
 	elif [[ "$mode" == "" || "$mode" == "debug" ]]; then
 		mode="debug"
-		CSFLAGS="-define:CSDEBUG -optimize:- -warn:4 -warnaserror:+"
+		CSFLAGS="${CSFLAGS} ${CSFLAGS_DEBUG}"
+	else
+		echo "Unkown mode ${mode}"
+		return
 	fi
 
 	echo "Building in ${mode} mode"
@@ -171,8 +158,30 @@ compileCSharp ()
 }
 
 
+compileJava ()
+{
+	echo "BUILDING JAVA SOURCE CODE"
+	javac -Xlint $(find "${SRCDIR}/java" -name '*.java')
+}
+
+
+compilePy ()
+{
+	echo "BUILDING PYTHON SOURCE CODE"
+	wd=$(pwd)
+	for pysrc in $(find "${SRCDIR}/python" -name '*test.py'); do
+		cd $(dirname $pysrc)
+		python -m py_compile $(basename ${pysrc})
+		cd $wd
+	done
+}
+
+
+
+
+
 compileCC $@
-compilePy $@
-compileJava $@
 compileCSharp $@
+compileJava $@
+compilePy $@
 

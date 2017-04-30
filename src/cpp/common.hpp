@@ -2,10 +2,15 @@
 #define CS_COMMON_HPP_
 #include <cstring>
 #include <iostream>
+#include <string>
 #include "data-structures/vector.hpp"
 
 
-inline Vector<int> create_int_vector_from_strings(const char* const * strs, const int size)
+template<class T>
+Vector<T> create_ds_from_strings(const char* const* strs, const int size);
+
+template<>
+Vector<int> create_ds_from_strings<int>(const char* const* strs, const int size)
 {
 	Vector<int> r;
 	r.reserve(size);
@@ -15,6 +20,19 @@ inline Vector<int> create_int_vector_from_strings(const char* const * strs, cons
 
 	return r;
 }
+
+template<>
+Vector<std::string> create_ds_from_strings<std::string>(const char* const* strs, const int size)
+{
+	Vector<std::string> r;
+	r.reserve(size);
+
+	for (int i = 0; i < size; ++i)
+		r.push_back(strs[i]);
+	
+	return r;
+}
+
 
 
 template<class T>
@@ -34,18 +52,18 @@ int sort_test(const int argc, const char* const * argv)
 		return EXIT_FAILURE;
 	}
 
-	Vector<int> v = create_int_vector_from_strings(argv + 1, argc - 1);
+	auto ds = create_ds_from_strings<int>(argv + 1, argc - 1);
 
 #ifdef CSDEBUG
 	std::cout << "UNSORTED:\n";
-	print_data(v);
+	print_data(ds);
 #endif
 
-	SortFun()(v.begin(), v.end(), [](int a, int b) { return a < b; });
+	SortFun()(ds.begin(), ds.end(), std::less<decltype(*ds.cbegin())>());
 
 #ifdef CSDEBUG
 	std::cout << "SORTED:\n";
-	print_data(v);
+	print_data(ds);
 #endif
 
 	return EXIT_SUCCESS;
@@ -60,17 +78,17 @@ int search_test(const int argc, const char* const * argv)
 		return EXIT_FAILURE;
 	}
 
-	Vector<int> v = create_int_vector_from_strings(argv + 1, argc - 1);
-	const int target = v.pop_back();
-	const auto itr = SearchFun()(v.begin(), v.end(), target);
+	auto ds = create_ds_from_strings<int>(argv + 1, argc - 1);
+	const auto target = ds.pop_back();
+	const auto itr = SearchFun()(ds.begin(), ds.end(), target);
 
 #ifdef CSDEBUG
 	std::cout << "ARRAY:\n";
-	print_data(v);
+	print_data(ds);
 #endif
 
-	if (itr != v.end())
-		std::cout << target << " FOUND AT INDEX " << (itr - v.begin()) << '\n';
+	if (itr != ds.end())
+		std::cout << target << " FOUND AT INDEX " << (itr - ds.begin()) << '\n';
 	else
 		std::cout << target << " NOT FOUND\n";
 

@@ -162,7 +162,7 @@ static inline ConstIterator linked_list_cadvance(const ConstIterator it, const i
 }
 
 
-static inline Iterator linked_list_begin(const LinkedList* const l)
+static inline Iterator linked_list_begin(LinkedList* const l)
 {
 	const ConstIterator it = linked_list_cbegin(l);
 	const Iterator r = LLITR(it.ds.ll, (void*) it.ptr, it.index);
@@ -170,7 +170,7 @@ static inline Iterator linked_list_begin(const LinkedList* const l)
 }
 
 
-static inline Iterator linked_list_end(const LinkedList* const l)
+static inline Iterator linked_list_end(LinkedList* const l)
 {
 	const ConstIterator it = linked_list_cend(l);
 	const Iterator r = LLITR(it.ds.ll, (void*) it.ptr, it.index);

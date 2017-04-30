@@ -32,7 +32,11 @@ namespace Common
 	{
 		public static int Sort(string[] args, ISortingAlgorithm sort)
 		{
+			#if DS_TYPE_INT
 			var data = Utils.MakeVectorFromStrings<int>(args);
+			#elif DS_TYPE_STR
+			var data = Utils.MakeVectorFromStrings<String>(args);
+			#endif
 
 			if (data.Count < 2) {
 				Console.Error.WriteLine("Usage: " + AppDomain.CurrentDomain.FriendlyName + " [list]");
@@ -57,14 +61,18 @@ namespace Common
 
 		public static int Search(string[] args, ISearchingAlgorithm search)
 		{
+			#if DS_TYPE_INT
 			var data = Utils.MakeVectorFromStrings<int>(args);
+			#elif DS_TYPE_STR
+			var data = Utils.MakeVectorFromStrings<String>(args);
+			#endif
 
 			if (data.Count < 3) {
 				Console.Error.WriteLine("Usage: " + AppDomain.CurrentDomain.FriendlyName + " [list] [target]");
 				return -1;
 			}	
 
-			int target = data.PopBack();
+			var target = data.PopBack();
 
 			#if CSDEBUG
 			Console.WriteLine("ARRAY:");

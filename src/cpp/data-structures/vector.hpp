@@ -70,16 +70,24 @@ public:
 		return m_cap;
 	}
 
-
-	const T* begin() const
+	const T* cbegin() const
 	{
 		return m_data;
 	}
 
+	const T* cend() const
+	{
+		return m_data + size();
+	}
+
+	const T* begin() const
+	{
+		return cbegin();
+	}
 
 	const T* end() const
 	{
-		return m_data + size();
+		return cend();
 	}
 
 

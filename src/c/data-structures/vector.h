@@ -139,7 +139,7 @@ static inline ConstIterator vector_cadvance(const ConstIterator it, const int n)
 }
 
 
-static inline Iterator vector_begin(const Vector* const v)
+static inline Iterator vector_begin(Vector* const v)
 {
 	const ConstIterator it = vector_cbegin(v);
 	const Iterator r = VECITR(it.ds.membsize, (void*)it.ptr, it.index);
@@ -147,7 +147,7 @@ static inline Iterator vector_begin(const Vector* const v)
 }
 
 
-static inline Iterator vector_end(const Vector* const v)
+static inline Iterator vector_end(Vector* const v)
 {
 	const ConstIterator it = vector_cend(v);
 	const Iterator r = VECITR(it.ds.membsize, (void*)it.ptr, it.index);
